@@ -23,5 +23,6 @@ for (const pkg of packages) {
   /**
    * 3. Publish to JSR
    */
-  await Bun.$`bunx jsr publish --allow-dirty`.cwd(`packages/${pkg}`);
+  // TODO: Uncomment this when JSR is ready
+  // await Bun.$`bunx jsr publish --allow-dirty`.cwd(`packages/${pkg}`);
 }
