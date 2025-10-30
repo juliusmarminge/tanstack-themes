@@ -3,7 +3,7 @@
  */
 export const MODULE = true;
 
-const packages = ["core", "nextjs", "nuxt"];
+const packages = ["core", "react", "solid"];
 
 /**
  * 1. Bump versions

@@ -4,7 +4,7 @@
  */
 export const MODULE = true;
 
-const packages = ["core", "nextjs", "nuxt"];
+const packages = ["core", "react", "solid"];
 
 const commitHash = (await Bun.$`git rev-parse --short HEAD`.text()).trim();
 
@@ -20,8 +20,8 @@ for (const pkg of packages) {
   jsrJson.version = newVersion;
   const content = `${JSON.stringify(pkgJson, null, "\t")}\n`;
   const newContent = content.replace(
-    new RegExp(`"@t3-oss/\\*": "${oldVersion}"`, "g"),
-    `"@t3-oss/*": "${newVersion}"`,
+    new RegExp(`"@tanstack-themes/\\*": "${oldVersion}"`, "g"),
+    `"@tanstack-themes/*": "${newVersion}"`,
   );
 
   await Bun.write(`packages/${pkg}/package.json`, newContent);
