@@ -31,6 +31,7 @@
   "scripts": {
     "build": "tsdown src/index.ts --dts --platform neutral --unbundle",
     "clean": "rm -rf .cache .turbo dist node_modules",
+    "prepack": "bun ../../scripts/replace-workspace-protocol.ts",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {

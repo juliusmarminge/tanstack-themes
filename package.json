@@ -13,7 +13,6 @@
     "dev": "turbo watch build test --filter @tanstack-themes/* --filter //",
     "fmt": "oxfmt",
     "lint": "oxlint",
-    "lint:fix": "oxfmt --fix",
     "test": "vitest --silent=passed-only",
     "test:run": "vitest run --silent=passed-only",
     "typecheck": "turbo typecheck"

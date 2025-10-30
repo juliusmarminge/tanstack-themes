@@ -42,7 +42,7 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git checkout changeset-release/main
-          bun lint:fix
+          bun fmt
           git add .
           # Check if there are staged changes before committing and pushing
           if ! git diff --staged --quiet; then
