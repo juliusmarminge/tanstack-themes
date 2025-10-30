@@ -2,7 +2,12 @@ import {
   createClientOnlyFn,
   createIsomorphicFn,
 } from "@tanstack/start-client-core";
-import { ThemeMode, VALID_THEME_MODES, ResolvedTheme } from "./config.ts";
+import {
+  ThemeMode,
+  VALID_THEME_MODES,
+  ResolvedTheme,
+  configStore,
+} from "./config.ts";
 
 export const getStoredThemeMode = createIsomorphicFn()
   .server((): ThemeMode => "auto")
@@ -73,31 +78,53 @@ export const disableAnimation = createClientOnlyFn((nonce?: string) => {
   };
 });
 
-export const updateThemeClass = createClientOnlyFn(
-  (
-    themeMode: ThemeMode,
-    variant: string,
-    shouldDisableAnimation: boolean = true,
-  ) => {
-    const cleanup = shouldDisableAnimation ? disableAnimation() : undefined;
+export const updateDOM = createClientOnlyFn(
+  (themeMode: ThemeMode, variant: string) => {
+    const shouldDisableAnimation = configStore.state.disableAnimation;
+    const themeColorLookup = configStore.state.themeColorLookup;
 
+    const cleanup = shouldDisableAnimation ? disableAnimation() : undefined;
+    const newTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
+
+    // 1. Update the root element classList (theme-mode)
     const root = document.documentElement;
     root.classList.remove(...VALID_THEME_MODES);
-    const newTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
     root.classList.add(newTheme);
+    if (themeMode === "auto") root.classList.add("auto");
 
-    if (themeMode === "auto") {
-      root.classList.add("auto");
-    }
+    // 2. Update the body element classList (theme-variant)
+    const bodyClss = Array.from(document.body.classList.values());
+    const variantClasses = bodyClss.filter((cls) => cls.startsWith("theme-"));
+    document.body.classList.remove(...variantClasses);
+    document.body.classList.add(`theme-${variant}`);
 
-    if (variant) {
-      const bodyClss = Array.from(document.body.classList.values());
-      const variantClasses = bodyClss.filter((cls) => cls.startsWith("theme-"));
-      document.body.classList.remove(...variantClasses);
-      document.body.classList.add(`theme-${variant}`);
-    }
-
+    // 3. Update the root element style.colorScheme
     document.documentElement.style.colorScheme = newTheme;
+
+    // 4. Update the theme color meta tags
+    if (themeColorLookup) {
+      const themeColorMetaTags =
+        document.head.querySelectorAll<HTMLMetaElement>(
+          "meta[name='theme-color']",
+        );
+      themeColorMetaTags.forEach((tag, idx) => {
+        if (themeMode === "auto") {
+          if (tag.media === "(prefers-color-scheme: light)") {
+            tag.content = themeColorLookup[`${variant}-light`];
+          } else if (tag.media === "(prefers-color-scheme: dark)") {
+            tag.content = themeColorLookup[`${variant}-dark`];
+          } else if (tag.media === "") {
+            const isLightTag = idx === 0;
+            tag.content =
+              themeColorLookup[`${variant}-${isLightTag ? "light" : "dark"}`];
+            tag.media = `(prefers-color-scheme: ${isLightTag ? "light" : "dark"})`;
+          }
+        } else {
+          tag.content = themeColorLookup[`${variant}-${newTheme}`];
+          tag.media = "";
+        }
+      });
+    }
 
     cleanup?.();
   },

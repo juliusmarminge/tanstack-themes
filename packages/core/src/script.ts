@@ -1,7 +1,7 @@
 import { VALID_THEME_MODES, ThemeMode, ThemeColorMap } from "./config.ts";
 
 export const getThemeDetectorScript = function (
-  themeColorLookup?: ThemeColorMap,
+  themeColorLookup: ThemeColorMap | undefined,
 ) {
   const fnArgs = [VALID_THEME_MODES, themeColorLookup] as const;
 

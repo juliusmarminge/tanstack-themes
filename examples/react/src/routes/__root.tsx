@@ -8,15 +8,16 @@ import {
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { ThemeProvider, getThemeColorMetaTags } from "@tanstack-themes/react";
-import { THEME_COLOR_MAP } from "../themes";
+import { THEME_COLOR_MAP } from "../lib/themes";
+import { seoLinks, seoMeta } from "../lib/seo";
 
 export const Route = createRootRoute({
   head: () => {
     const themeColorMetaTags = getThemeColorMetaTags(THEME_COLOR_MAP);
     console.log("running head. Meta tags:", themeColorMetaTags);
     return {
-      links: [{ rel: "stylesheet", href: appCss }],
-      meta: [...themeColorMetaTags],
+      links: [{ rel: "stylesheet", href: appCss }, ...seoLinks()],
+      meta: [...themeColorMetaTags, ...seoMeta()],
     };
   },
   component: RootComponent,
@@ -37,7 +38,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider themeColorMap={THEME_COLOR_MAP} />
+        <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
         {children}
         <Scripts />
       </body>

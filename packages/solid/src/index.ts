@@ -14,6 +14,7 @@ export {
   getThemeColorMetaTags,
   type Register,
   type ThemeColorMap,
+  type TanstackThemesConfig,
 } from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(
@@ -23,13 +24,15 @@ export function useTheme<T = core.ThemeStore>(
 }
 
 export function ThemeProvider(
-  props: Solid.ParentProps<{
-    themeColorMap?: core.ThemeColorMap;
-  }>,
+  props: Solid.ParentProps<Partial<core.TanstackThemesConfig>>,
 ): Solid.JSX.Element {
   const mode = useTheme((state) => state.themeMode);
 
   Solid.onMount(core.hydrateStore);
+
+  Solid.createEffect(() => {
+    core.setConfig(props);
+  });
 
   Solid.createEffect(() => {
     if (mode() !== "auto") return;
@@ -38,6 +41,6 @@ export function ThemeProvider(
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(props.themeColorMap),
+    children: core.getThemeDetectorScript(props.themeColorLookup),
   });
 }

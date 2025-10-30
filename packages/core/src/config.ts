@@ -1,3 +1,5 @@
+import { Store } from "@tanstack/store";
+
 export interface Register {}
 
 export const VALID_THEME_MODES = ["light", "dark", "auto"] as const;
@@ -9,3 +11,13 @@ export type ThemeVariant = Register extends { variant: string }
   : string;
 
 export type ThemeColorMap = Record<`${ThemeVariant}-${ResolvedTheme}`, string>;
+
+export interface TanstackThemesConfig {
+  themeColorLookup: ThemeColorMap | undefined;
+  disableAnimation: boolean;
+}
+
+export const configStore = new Store<TanstackThemesConfig>({
+  themeColorLookup: undefined,
+  disableAnimation: true,
+});

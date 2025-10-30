@@ -9,7 +9,7 @@ import {
 import { Button } from "../components/button";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { NativeSelect, NativeSelectOption } from "../components/native-select";
-import { ThemeVariant, THEMES } from "../themes";
+import { ThemeVariant, THEMES } from "../lib/themes";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,

@@ -14,6 +14,7 @@ export {
   getThemeColorMetaTags,
   type Register,
   type ThemeColorMap,
+  type TanstackThemesConfig,
 } from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(
@@ -23,9 +24,7 @@ export function useTheme<T = core.ThemeStore>(
 }
 
 export function ThemeProvider(
-  props: React.PropsWithChildren<{
-    themeColorMap?: core.ThemeColorMap;
-  }>,
+  props: React.PropsWithChildren<Partial<core.TanstackThemesConfig>>,
 ): React.ReactNode {
   const mode = useTheme((state) => state.themeMode);
 
@@ -34,11 +33,15 @@ export function ThemeProvider(
   }, []);
 
   React.useEffect(() => {
+    core.setConfig(props);
+  }, [props]);
+
+  React.useEffect(() => {
     if (mode !== "auto") return;
     return core.setupPreferredListener();
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(props.themeColorMap),
+    children: core.getThemeDetectorScript(props.themeColorLookup),
   });
 }

@@ -13,9 +13,11 @@ import type {
   ResolvedTheme,
   ThemeVariant,
   ThemeColorMap,
+  TanstackThemesConfig,
 } from "./config.ts";
+import { configStore } from "./config.ts";
 import {
-  updateThemeClass,
+  updateDOM,
   getStoredThemeMode,
   getSystemTheme,
   getStoredThemeVariant,
@@ -24,8 +26,11 @@ import {
   setStoredThemeVariant,
 } from "./utils.ts";
 export { getThemeDetectorScript } from "./script.ts";
-export type { Register, ThemeColorMap } from "./config.ts";
-import type { RouteMatchExtensions } from "@tanstack/router-core";
+export type {
+  Register,
+  ThemeColorMap,
+  TanstackThemesConfig,
+} from "./config.ts";
 
 export interface ThemeStore {
   themeMode: ThemeMode;
@@ -45,7 +50,7 @@ export const setTheme = (themeMode: ThemeMode): void => {
     themeMode,
   }));
   setStoredThemeMode(themeMode);
-  updateThemeClass(themeMode, store.state.variant);
+  updateDOM(themeMode, store.state.variant);
 };
 
 export const setVariant = (variant: ThemeVariant): void => {
@@ -54,7 +59,7 @@ export const setVariant = (variant: ThemeVariant): void => {
     variant,
   }));
   setStoredThemeVariant(variant);
-  updateThemeClass(store.state.themeMode, variant);
+  updateDOM(store.state.themeMode, variant);
 };
 
 export const toggleMode = (): void => {
@@ -65,14 +70,26 @@ export const hydrateStore = createClientOnlyFn(() => {
   const themeMode = getStoredThemeMode();
   const resolvedTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
   const variant = getStoredThemeVariant();
-  store.setState({ resolvedTheme, themeMode, variant });
+  store.setState((state) => ({
+    ...state,
+    resolvedTheme,
+    themeMode,
+    variant,
+  }));
 });
+
+export const setConfig = (config: Partial<TanstackThemesConfig>) => {
+  configStore.setState((state) => ({
+    ...state,
+    ...config,
+  }));
+};
 
 export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handler = () => {
     const variant = getStoredThemeVariant();
-    updateThemeClass("auto", variant);
+    updateDOM("auto", variant);
     store.setState((state) => ({
       ...state,
       resolvedTheme:
@@ -84,25 +101,19 @@ export const setupPreferredListener = createClientOnlyFn(() => {
 });
 
 export const getThemeColorMetaTags = createIsomorphicFn()
-  .client(
-    (_: ThemeColorMap): Exclude<RouteMatchExtensions["meta"], undefined> => [],
-  )
-  .server(
-    (
-      themeColorMap: ThemeColorMap,
-    ): Exclude<RouteMatchExtensions["meta"], undefined> => {
-      const variant = getStoredThemeVariant();
-      return [
-        {
-          name: "theme-color",
-          media: "(prefers-color-scheme: light)",
-          content: themeColorMap[`${variant}-light`],
-        },
-        {
-          name: "theme-color",
-          media: "(prefers-color-scheme: dark)",
-          content: themeColorMap[`${variant}-dark`],
-        },
-      ];
-    },
-  );
+  .client((_: ThemeColorMap) => [])
+  .server((themeColorMap: ThemeColorMap) => {
+    const variant = getStoredThemeVariant();
+    return [
+      {
+        name: "theme-color",
+        media: "(prefers-color-scheme: light)",
+        content: themeColorMap[`${variant}-light`],
+      },
+      {
+        name: "theme-color",
+        media: "(prefers-color-scheme: dark)",
+        content: themeColorMap[`${variant}-dark`],
+      },
+    ];
+  });
