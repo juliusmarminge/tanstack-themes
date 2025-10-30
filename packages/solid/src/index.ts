@@ -7,7 +7,12 @@ import { useStore } from "@tanstack/solid-store";
 import { ScriptOnce } from "@tanstack/solid-router";
 import * as core from "@tanstack-themes/core";
 
-export { setTheme, setVariant, toggleMode } from "@tanstack-themes/core";
+export {
+  setTheme,
+  setVariant,
+  toggleMode,
+  type Register,
+} from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(
   selector?: (state: core.ThemeStore) => T,
@@ -27,11 +32,6 @@ export function ThemeProvider(_props: Solid.ParentProps): Solid.JSX.Element {
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(
-      core.THEME_MODE_KEY,
-      core.THEME_VARIANT_KEY,
-      core.VALID_THEME_VARIANTS,
-      {},
-    ),
+    children: core.getThemeDetectorScript({}),
   });
 }

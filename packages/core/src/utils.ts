@@ -2,23 +2,13 @@ import {
   createClientOnlyFn,
   createIsomorphicFn,
 } from "@tanstack/start-client-core";
-import {
-  ThemeVariant,
-  ThemeMode,
-  THEME_MODE_KEY,
-  VALID_THEME_MODES,
-  THEME_VARIANT_KEY,
-  VALID_THEME_VARIANTS,
-  ResolvedTheme,
-} from "./config.ts";
-
-const toClassName = (variant: ThemeVariant) => `theme-${variant}`;
+import { ThemeMode, VALID_THEME_MODES, ResolvedTheme } from "./config.ts";
 
 export const getStoredThemeMode = createIsomorphicFn()
   .server((): ThemeMode => "auto")
   .client((): ThemeMode => {
     try {
-      const storedTheme = localStorage.getItem(THEME_MODE_KEY);
+      const storedTheme = localStorage.getItem("theme-mode");
       return VALID_THEME_MODES.includes(storedTheme as ThemeMode)
         ? (storedTheme as ThemeMode)
         : "auto";
@@ -30,32 +20,30 @@ export const getStoredThemeMode = createIsomorphicFn()
 export const setStoredThemeMode = createClientOnlyFn((theme: ThemeMode) => {
   try {
     const parsedTheme = VALID_THEME_MODES.includes(theme) ? theme : "auto";
-    localStorage.setItem(THEME_MODE_KEY, parsedTheme);
+    localStorage.setItem("theme-mode", parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
   }
 });
 
 export const getStoredThemeVariant = createIsomorphicFn()
-  .server((_?: ThemeVariant): ThemeVariant => "default")
-  .client((defaultVariant = "default"): ThemeVariant => {
+  .server((defaultVariant: string = "default") => defaultVariant)
+  .client((defaultVariant = "default") => {
     try {
-      const storedVariant = localStorage.getItem(THEME_VARIANT_KEY);
+      const storedVariant = localStorage.getItem("theme-variant");
       return storedVariant ?? defaultVariant;
     } catch {
       return defaultVariant;
     }
   });
 
-export const setStoredThemeVariant = createClientOnlyFn(
-  (variant: ThemeVariant) => {
-    try {
-      localStorage.setItem(THEME_VARIANT_KEY, variant);
-    } catch {
-      // Silently fail if localStorage is unavailable
-    }
-  },
-);
+export const setStoredThemeVariant = createClientOnlyFn((variant: string) => {
+  try {
+    localStorage.setItem("theme-variant", variant);
+  } catch {
+    // Silently fail if localStorage is unavailable
+  }
+});
 
 export const getSystemTheme = createIsomorphicFn()
   .server((): ResolvedTheme => "light")
@@ -86,8 +74,12 @@ export const disableAnimation = createClientOnlyFn((nonce?: string) => {
 });
 
 export const updateThemeClass = createClientOnlyFn(
-  (themeMode: ThemeMode, variant: ThemeVariant) => {
-    const cleanup = disableAnimation();
+  (
+    themeMode: ThemeMode,
+    variant: string,
+    shouldDisableAnimation: boolean = true,
+  ) => {
+    const cleanup = shouldDisableAnimation ? disableAnimation() : undefined;
 
     const root = document.documentElement;
     root.classList.remove(...VALID_THEME_MODES);
@@ -99,15 +91,17 @@ export const updateThemeClass = createClientOnlyFn(
     }
 
     if (variant) {
-      document.body.classList.remove(...VALID_THEME_VARIANTS.map(toClassName));
-      document.body.classList.add(toClassName(variant));
+      const bodyClss = Array.from(document.body.classList.values());
+      const variantClasses = bodyClss.filter((cls) => cls.startsWith("theme-"));
+      document.body.classList.remove(...variantClasses);
+      document.body.classList.add(`theme-${variant}`);
     }
 
-    cleanup();
+    cleanup?.();
   },
 );
 
-export const getNextTheme = createClientOnlyFn(
+export const getNextThemeMode = createClientOnlyFn(
   (current: ThemeMode): ThemeMode => {
     const themes: ThemeMode[] =
       getSystemTheme() === "dark"

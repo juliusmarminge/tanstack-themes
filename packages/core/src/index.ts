@@ -4,23 +4,23 @@
  */
 import { createClientOnlyFn } from "@tanstack/start-client-core";
 import { Store } from "@tanstack/store";
-import type { ThemeMode, ThemeVariant, ResolvedTheme } from "./config.ts";
-export * from "./config.ts";
+import type { ThemeMode, Register, ResolvedTheme } from "./config.ts";
 import {
   updateThemeClass,
   getStoredThemeMode,
   getSystemTheme,
   getStoredThemeVariant,
-  getNextTheme,
+  getNextThemeMode,
   setStoredThemeMode,
   setStoredThemeVariant,
 } from "./utils.ts";
 export { getThemeDetectorScript } from "./script.ts";
+export { type Register };
 
 export interface ThemeStore {
   themeMode: ThemeMode;
   resolvedTheme: ResolvedTheme;
-  variant: ThemeVariant;
+  variant: Register extends { variant: string } ? Register["variant"] : string;
 }
 
 export const store = new Store<ThemeStore>({
@@ -38,7 +38,9 @@ export const setTheme = (themeMode: ThemeMode): void => {
   updateThemeClass(themeMode, store.state.variant);
 };
 
-export const setVariant = (variant: ThemeVariant): void => {
+export const setVariant = (
+  variant: Register extends { variant: string } ? Register["variant"] : string,
+): void => {
   store.setState((state) => ({
     ...state,
     variant,
@@ -48,7 +50,7 @@ export const setVariant = (variant: ThemeVariant): void => {
 };
 
 export const toggleMode = (): void => {
-  setTheme(getNextTheme(store.state.themeMode));
+  setTheme(getNextThemeMode(store.state.themeMode));
 };
 
 export const hydrateStore = createClientOnlyFn(() => {

@@ -9,6 +9,7 @@ import {
 import { Button } from "../components/button";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { NativeSelect, NativeSelectOption } from "../components/native-select";
+import { ThemeVariant, THEMES } from "../themes";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -29,10 +30,15 @@ function RouteComponent() {
 function VariantSelect() {
   const variant = useTheme((state) => state.variant);
   return (
-    <NativeSelect value={variant} onChange={(e) => setVariant(e.target.value)}>
-      <NativeSelectOption value="default">Default</NativeSelectOption>
-      <NativeSelectOption value="t3chat">T3Chat</NativeSelectOption>
-      <NativeSelectOption value="catpuccin">Catpuccin</NativeSelectOption>
+    <NativeSelect
+      value={variant}
+      onChange={(e) => setVariant(e.target.value as ThemeVariant)}
+    >
+      {THEMES.map((theme) => (
+        <NativeSelectOption key={theme} value={theme}>
+          {theme}
+        </NativeSelectOption>
+      ))}
     </NativeSelect>
   );
 }
