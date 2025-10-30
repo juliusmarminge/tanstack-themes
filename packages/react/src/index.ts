@@ -31,6 +31,9 @@ export function ThemeProvider(
 
   React.useEffect(() => {
     core.hydrateStore();
+  }, []);
+
+  React.useEffect(() => {
     if (mode !== "auto") return;
     return core.setupPreferredListener();
   }, [mode]);
