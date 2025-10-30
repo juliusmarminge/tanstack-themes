@@ -5,7 +5,7 @@
     "target": "es2022",
     // "erasableSyntaxOnly": true,
     // "libReplacement": false,
-    "isolatedDeclarations": true,
+    // "isolatedDeclarations": true,
     "declaration": true,
     "isolatedModules": true,
     "allowImportingTsExtensions": true,

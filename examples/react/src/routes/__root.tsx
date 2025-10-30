@@ -7,6 +7,7 @@ import {
   createRootRoute,
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
+import { ThemeProvider } from "@tanstack-themes/react";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -25,11 +26,12 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground" suppressHydrationWarning>
+        <ThemeProvider />
         {children}
         <Scripts />
       </body>

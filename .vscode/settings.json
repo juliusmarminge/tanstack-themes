@@ -19,5 +19,8 @@
   "oxc.fmt.experimental": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.experimental.useTsgo": true,
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

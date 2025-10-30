@@ -1,24 +1,68 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useTheme } from "@tanstack-themes/react";
+import { createFileRoute, ClientOnly } from "@tanstack/react-router";
+import { useTheme, setVariant, setTheme } from "@tanstack-themes/react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../components/dropdown-menu";
+import { Button } from "../components/button";
+import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { NativeSelect, NativeSelectOption } from "../components/native-select";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { themeMode, variant } = useTheme();
-
   return (
     <main className="p-8">
       <h1 className="text-2xl font-bold">Hello world!</h1>
-      <p>Theme mode: {themeMode}</p>
-      <p>Variant: {variant}</p>
-      <p>
-        Tailwind Active Variant:
-        <span className="hidden light:inline mr-1">light</span>
-        <span className="hidden dark:inline mr-1">dark</span>
-        <span className="hidden auto:inline mr-1">auto</span>
-      </p>
+      <ClientOnly>
+        <ThemeToggle />
+        <VariantSelect />
+      </ClientOnly>
     </main>
+  );
+}
+
+function VariantSelect() {
+  const variant = useTheme((state) => state.variant);
+  return (
+    <NativeSelect value={variant} onChange={(e) => setVariant(e.target.value)}>
+      <NativeSelectOption value="default">Default</NativeSelectOption>
+      <NativeSelectOption value="t3chat">T3Chat</NativeSelectOption>
+      <NativeSelectOption value="catpuccin">Catpuccin</NativeSelectOption>
+    </NativeSelect>
+  );
+}
+
+export function ThemeToggle() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="[&>svg]:absolute [&>svg]:size-5 [&>svg]:scale-0"
+        >
+          <SunIcon className="light:scale-100! auto:scale-0!" />
+          <MoonIcon className="auto:scale-0! dark:scale-100!" />
+          <DesktopIcon className="auto:scale-100!" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("auto")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

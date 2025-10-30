@@ -1,19 +1,19 @@
 {
-  "name": "@tanstack-themes/react",
+  "name": "@tanstack-themes/solid",
   "version": "0.0.0-alpha.1",
   "type": "module",
   "keywords": [
     "tanstack",
     "tanstack-start",
     "themes",
-    "react"
+    "solid-js"
   ],
   "author": "Julius Marminge",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/juliusmarminge/tanstack-themes",
-    "directory": "packages/react"
+    "directory": "packages/solid"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -37,16 +37,15 @@
     "@tanstack-themes/core": "workspace:*"
   },
   "peerDependencies": {
-    "@tanstack/react-router": "^1.130",
-    "@tanstack/react-store": "^0.7.7",
-    "react": "^18.2.0 || ^19.0.0"
+    "@tanstack/solid-router": "^1.130",
+    "@tanstack/solid-store": "^0.7.7",
+    "solid-js": "^1.0.0"
   },
   "devDependencies": {
-    "@tanstack/react-router": "^1.133.36",
-    "@tanstack/react-store": "^0.7.7",
-    "@types/react": "^19.2.2",
+    "@tanstack/solid-router": "^1.133.36",
+    "@tanstack/solid-store": "^0.7.7",
     "@typescript/native-preview": "7.0.0-dev.20251029.1",
-    "react": "^19.2.0",
+    "solid-js": "^1.9.10",
     "tsdown": "0.15.12"
   }
 }

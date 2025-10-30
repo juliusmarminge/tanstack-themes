@@ -1,1 +1,1 @@
-# @tanstack-themes/core
+# @tanstack-themes/react
