@@ -12,6 +12,8 @@ export {
   setVariant,
   toggleMode,
   type Register,
+  type ThemeColorMap,
+  themeColorMetaTags,
 } from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(
@@ -21,7 +23,9 @@ export function useTheme<T = core.ThemeStore>(
 }
 
 export function ThemeProvider(
-  _props: React.PropsWithChildren,
+  props: React.PropsWithChildren<{
+    themeColorMap?: core.ThemeColorMap;
+  }>,
 ): React.ReactNode {
   const mode = useTheme((state) => state.themeMode);
 
@@ -32,6 +36,6 @@ export function ThemeProvider(
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript({}),
+    children: core.getThemeDetectorScript(props.themeColorMap),
   });
 }

@@ -37,6 +37,7 @@
     "@tanstack/store": "^0.7.7"
   },
   "devDependencies": {
+    "@tanstack/router-core": "^1.133.36",
     "@tanstack/start-client-core": "^1.133.36",
     "@tanstack/store": "^0.7.7",
     "@typescript/native-preview": "7.0.0-dev.20251029.1",

@@ -1,7 +1,7 @@
-import { VALID_THEME_MODES, ThemeMode } from "./config.ts";
+import { VALID_THEME_MODES, ThemeMode, ThemeColorMap } from "./config.ts";
 
 export const getThemeDetectorScript = function (
-  themeColorLookup: Record<string, string>,
+  themeColorLookup?: ThemeColorMap,
 ) {
   const fnArgs = [VALID_THEME_MODES, themeColorLookup] as const;
 
@@ -24,19 +24,20 @@ export const getThemeDetectorScript = function (
     const storedVariant = localStorage.getItem("theme-variant") ?? "default";
     document.body.classList.add(`theme-${storedVariant}`);
 
-    const themeColorMetaTags = document.head.querySelectorAll<HTMLMetaElement>(
-      "meta[name='theme-color']",
-    );
-    for (const tag of themeColorMetaTags) {
-      if (validTheme === "auto") {
-        tag.content = themeColorLookup[`${storedVariant}-light`];
-        tag.content = themeColorLookup[`${storedVariant}-dark`];
-      } else {
-        tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
+    if (themeColorLookup) {
+      const themeColorMetaTags =
+        document.head.querySelectorAll<HTMLMetaElement>(
+          "meta[name='theme-color']",
+        );
+      for (const tag of themeColorMetaTags) {
+        if (validTheme === "auto") {
+          tag.content = themeColorLookup[`${storedVariant}-light`];
+          tag.content = themeColorLookup[`${storedVariant}-dark`];
+        } else {
+          tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
+        }
       }
     }
-
-    console.log("[script] themeColorMetaTags", themeColorMetaTags);
   }
   return `(${themeFn.toString()})(${JSON.stringify(fnArgs)});`;
 };

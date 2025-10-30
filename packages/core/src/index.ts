@@ -4,7 +4,13 @@
  */
 import { createClientOnlyFn } from "@tanstack/start-client-core";
 import { Store } from "@tanstack/store";
-import type { ThemeMode, Register, ResolvedTheme } from "./config.ts";
+import type {
+  ThemeMode,
+  Register,
+  ResolvedTheme,
+  ThemeVariant,
+  ThemeColorMap,
+} from "./config.ts";
 import {
   updateThemeClass,
   getStoredThemeMode,
@@ -15,12 +21,13 @@ import {
   setStoredThemeVariant,
 } from "./utils.ts";
 export { getThemeDetectorScript } from "./script.ts";
-export { type Register };
+export type { Register, ThemeColorMap } from "./config.ts";
+import type { RouteMatchExtensions } from "@tanstack/router-core";
 
 export interface ThemeStore {
   themeMode: ThemeMode;
   resolvedTheme: ResolvedTheme;
-  variant: Register extends { variant: string } ? Register["variant"] : string;
+  variant: ThemeVariant;
 }
 
 export const store = new Store<ThemeStore>({
@@ -38,9 +45,7 @@ export const setTheme = (themeMode: ThemeMode): void => {
   updateThemeClass(themeMode, store.state.variant);
 };
 
-export const setVariant = (
-  variant: Register extends { variant: string } ? Register["variant"] : string,
-): void => {
+export const setVariant = (variant: ThemeVariant): void => {
   store.setState((state) => ({
     ...state,
     variant,
@@ -74,3 +79,21 @@ export const setupPreferredListener = createClientOnlyFn(() => {
   mediaQuery.addEventListener("change", handler);
   return () => mediaQuery.removeEventListener("change", handler);
 });
+
+export const themeColorMetaTags = (
+  themeColorMap: ThemeColorMap,
+): Exclude<RouteMatchExtensions["meta"], undefined> => {
+  const variant = getStoredThemeVariant();
+  return [
+    {
+      name: "theme-color",
+      media: "(prefers-color-scheme: light)",
+      content: themeColorMap[`${variant}-light`],
+    },
+    {
+      name: "theme-color",
+      media: "(prefers-color-scheme: dark)",
+      content: themeColorMap[`${variant}-dark`],
+    },
+  ];
+};

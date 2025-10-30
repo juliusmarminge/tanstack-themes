@@ -12,6 +12,8 @@ export {
   setVariant,
   toggleMode,
   type Register,
+  type ThemeColorMap,
+  themeColorMetaTags,
 } from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(
@@ -20,7 +22,11 @@ export function useTheme<T = core.ThemeStore>(
   return useStore(core.store, selector);
 }
 
-export function ThemeProvider(_props: Solid.ParentProps): Solid.JSX.Element {
+export function ThemeProvider(
+  props: Solid.ParentProps<{
+    themeColorMap?: core.ThemeColorMap;
+  }>,
+): Solid.JSX.Element {
   const mode = useTheme((state) => state.themeMode);
 
   Solid.onMount(core.hydrateStore);
@@ -32,6 +38,6 @@ export function ThemeProvider(_props: Solid.ParentProps): Solid.JSX.Element {
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript({}),
+    children: core.getThemeDetectorScript(props.themeColorMap),
   });
 }

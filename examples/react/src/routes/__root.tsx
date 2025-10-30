@@ -7,11 +7,13 @@ import {
   createRootRoute,
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
-import { ThemeProvider } from "@tanstack-themes/react";
+import { ThemeProvider, themeColorMetaTags } from "@tanstack-themes/react";
+import { THEME_COLOR_MAP } from "../themes";
 
 export const Route = createRootRoute({
   head: () => ({
     links: [{ rel: "stylesheet", href: appCss }],
+    meta: [...themeColorMetaTags(THEME_COLOR_MAP)],
   }),
   component: RootComponent,
 });
@@ -31,7 +33,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider />
+        <ThemeProvider themeColorMap={THEME_COLOR_MAP} />
         {children}
         <Scripts />
       </body>
