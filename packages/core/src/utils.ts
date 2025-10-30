@@ -97,6 +97,8 @@ export const updateThemeClass = createClientOnlyFn(
       document.body.classList.add(`theme-${variant}`);
     }
 
+    document.documentElement.style.colorScheme = newTheme;
+
     cleanup?.();
   },
 );

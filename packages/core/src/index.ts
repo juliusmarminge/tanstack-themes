@@ -2,7 +2,10 @@
  * This is the core package of tanstack-themes.
  * @module
  */
-import { createClientOnlyFn } from "@tanstack/start-client-core";
+import {
+  createClientOnlyFn,
+  createIsomorphicFn,
+} from "@tanstack/start-client-core";
 import { Store } from "@tanstack/store";
 import type {
   ThemeMode,
@@ -80,20 +83,26 @@ export const setupPreferredListener = createClientOnlyFn(() => {
   return () => mediaQuery.removeEventListener("change", handler);
 });
 
-export const getThemeColorMetaTags = (
-  themeColorMap: ThemeColorMap,
-): Exclude<RouteMatchExtensions["meta"], undefined> => {
-  const variant = getStoredThemeVariant();
-  return [
-    {
-      name: "theme-color",
-      media: "(prefers-color-scheme: light)",
-      content: themeColorMap[`${variant}-light`],
+export const getThemeColorMetaTags = createIsomorphicFn()
+  .client(
+    (_: ThemeColorMap): Exclude<RouteMatchExtensions["meta"], undefined> => [],
+  )
+  .server(
+    (
+      themeColorMap: ThemeColorMap,
+    ): Exclude<RouteMatchExtensions["meta"], undefined> => {
+      const variant = getStoredThemeVariant();
+      return [
+        {
+          name: "theme-color",
+          media: "(prefers-color-scheme: light)",
+          content: themeColorMap[`${variant}-light`],
+        },
+        {
+          name: "theme-color",
+          media: "(prefers-color-scheme: dark)",
+          content: themeColorMap[`${variant}-dark`],
+        },
+      ];
     },
-    {
-      name: "theme-color",
-      media: "(prefers-color-scheme: dark)",
-      content: themeColorMap[`${variant}-dark`],
-    },
-  ];
-};
+  );

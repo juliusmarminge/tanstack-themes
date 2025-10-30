@@ -10,15 +10,15 @@ export const getThemeDetectorScript = function (
     const validTheme = validThemeModes.includes(storedTheme as ThemeMode)
       ? (storedTheme as ThemeMode)
       : "auto";
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const resolvedTheme = mql.matches ? "dark" : "light";
 
     if (validTheme === "auto") {
-      const autoTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-      document.documentElement.classList.add(autoTheme, "auto");
+      document.documentElement.classList.add(resolvedTheme, "auto");
+      document.documentElement.style.colorScheme = resolvedTheme;
     } else {
       document.documentElement.classList.add(validTheme);
+      document.documentElement.style.colorScheme = validTheme;
     }
 
     const storedVariant = localStorage.getItem("theme-variant") ?? "default";
@@ -31,10 +31,14 @@ export const getThemeDetectorScript = function (
         );
       for (const tag of themeColorMetaTags) {
         if (validTheme === "auto") {
-          tag.content = themeColorLookup[`${storedVariant}-light`];
-          tag.content = themeColorLookup[`${storedVariant}-dark`];
+          if (tag.media === "(prefers-color-scheme: light)") {
+            tag.content = themeColorLookup[`${storedVariant}-light`];
+          } else if (tag.media === "(prefers-color-scheme: dark)") {
+            tag.content = themeColorLookup[`${storedVariant}-dark`];
+          }
         } else {
           tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
+          tag.media = "";
         }
       }
 
