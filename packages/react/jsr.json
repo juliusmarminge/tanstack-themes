@@ -1,9 +1,18 @@
 {
   "name": "@tanstack-themes/react",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0",
   "exports": {
     ".": "./src/index.ts"
   },
-  "include": ["src/**/*.ts", "README.md", "LICENSE", "package.json"],
-  "exclude": ["node_modules", "dist", "test"]
+  "include": [
+    "src/**/*.ts",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ]
 }

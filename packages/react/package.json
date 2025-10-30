@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-themes/react",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0",
   "type": "module",
   "keywords": [
     "tanstack",
