@@ -1,0 +1,49 @@
+{
+  "name": "@tanstack-themes/react",
+  "version": "0.0.0-alpha.1",
+  "type": "module",
+  "keywords": [
+    "tanstack",
+    "tanstack-start",
+    "themes",
+    "react"
+  ],
+  "author": "Julius Marminge",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juliusmarminge/tanstack-themes",
+    "directory": "packages/react"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts --dts --platform neutral --unbundle",
+    "clean": "rm -rf .cache .turbo dist node_modules",
+    "typecheck": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "@tanstack-themes/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@tanstack/react-router": "^1.130",
+    "@tanstack/react-store": "^0.7.7"
+  },
+  "devDependencies": {
+    "@tanstack/react-router": "^1.133.36",
+    "@tanstack/react-store": "^0.7.7",
+    "@typescript/native-preview": "7.0.0-dev.20251029.1",
+    "tsdown": "0.15.12"
+  }
+}

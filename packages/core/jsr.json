@@ -1,0 +1,9 @@
+{
+  "name": "@tanstack-themes/core",
+  "version": "0.0.0-alpha.1",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "include": ["src/**/*.ts", "README.md", "LICENSE", "package.json"],
+  "exclude": ["node_modules", "dist", "test"]
+}

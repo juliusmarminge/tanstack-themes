@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "TypeScriptTeam.native-preview",
+    "unifiedjs.vscode-mdx",
+    "vitest.explorer"
+  ]
+}

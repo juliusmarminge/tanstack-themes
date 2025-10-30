@@ -1,0 +1,8 @@
+{
+  "ignorePatterns": [
+    "**/.turbo/**",
+    "**/.vercel/**",
+    "**/node_modules/**",
+    "**/routeTree.gen.ts"
+  ]
+}

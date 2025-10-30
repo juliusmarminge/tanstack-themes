@@ -1,0 +1,25 @@
+name: Setup Workflow
+description: Composite action that sets up bun and installs dependencies
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v4
+    # - uses: useblacksmith/setup-node@v5
+      with:
+        node-version: 22.x
+
+    - uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    # Consider enabling in the future. For now the cache restoration is slower than the installation.
+    # - name: Cache dependencies
+    #   uses: useblacksmith/cache@v5
+    #   with:
+    #     path: ~/.bun/install/cache
+    #     key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-bun-
+
+    - run: bun install
+      shell: bash

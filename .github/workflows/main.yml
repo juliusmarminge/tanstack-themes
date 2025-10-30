@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches: ["main"]
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+env:
+  FORCE_COLOR: 3
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: ./.github/setup
+
+      - run: bun turbo build --filter=@tanstack-themes/*
+
+  lint:
+    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: ./.github/setup
+
+      - run: bun lint
+      - run: bunx sherif@1.6.1
+
+  typecheck:
+    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: ./.github/setup
+
+      - run: bun typecheck
+
+  test:
+    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: ./.github/setup
+
+      - run: bun turbo run build --filter=@tanstack-themes/*
+      - run: bun run test

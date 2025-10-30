@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@custom-variant light (&:where(.light, .light *));
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant auto (&:where(.auto, .auto *));
+
+.theme-default {
+  --background: #f4f4f5;
+  --foreground: #18181b;
+
+  @variant dark {
+    --background: #18181b;
+    --foreground: #f4f4f5;
+  }
+}
+
+.theme-ruby {
+  --background: #e0115f;
+  --foreground: #ffffff;
+
+  @variant dark {
+    --background: #7c0a02;
+    --foreground: #ffffff;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@tanstack-themes/root",
+  "packageManager": "bun@1.3.1",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "examples/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build --filter @tanstack-themes/*",
+    "clean": "turbo run clean && rm -rf .turbo node_modules",
+    "dev": "turbo watch build test --filter @tanstack-themes/* --filter //",
+    "fmt": "oxfmt",
+    "lint": "oxlint",
+    "lint:fix": "oxfmt --fix",
+    "test": "vitest --silent=passed-only",
+    "test:run": "vitest run --silent=passed-only",
+    "typecheck": "turbo typecheck"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.7",
+    "@types/bun": "^1.3.1",
+    "@typescript/native-preview": "7.0.0-dev.20251029.1",
+    "oxfmt": "0.8.0",
+    "oxlint": "1.24.0",
+    "turbo": "2.5.8",
+    "vitest": "4.0.5"
+  }
+}
