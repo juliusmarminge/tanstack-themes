@@ -80,7 +80,7 @@ export const setupPreferredListener = createClientOnlyFn(() => {
   return () => mediaQuery.removeEventListener("change", handler);
 });
 
-export const themeColorMetaTags = (
+export const getThemeColorMetaTags = (
   themeColorMap: ThemeColorMap,
 ): Exclude<RouteMatchExtensions["meta"], undefined> => {
   const variant = getStoredThemeVariant();

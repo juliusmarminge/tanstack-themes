@@ -1,0 +1,24 @@
+diff --git a/dist/esm/HeadContent.js b/dist/esm/HeadContent.js
+index 5e841fc50354c324149848b965f47c0f4353de96..98316ea5901846aba43e43d00cfa64485c3e5847 100644
+--- a/dist/esm/HeadContent.js
++++ b/dist/esm/HeadContent.js
+@@ -3,6 +3,10 @@ import { createElement } from "react";
+ import { Asset } from "./Asset.js";
+ import { useRouter } from "./useRouter.js";
+ import { useRouterState } from "./useRouterState.js";
++const METAS_TO_ALLOW_MULTIPLE = new Set(["theme-color"])
++const shouldDeduplicateMeta = (attribute) => {
++  return METAS_TO_ALLOW_MULTIPLE.has(attribute) === false
++}
+ const useTags = () => {
+   const router = useRouter();
+   const nonce = router.options.ssr?.nonce;
+@@ -30,7 +34,7 @@ const useTags = () => {
+         } else {
+           const attribute = m.name ?? m.property;
+           if (attribute) {
+-            if (metaByAttribute[attribute]) {
++            if (metaByAttribute[attribute] && shouldDeduplicateMeta(attribute)) {
+               continue;
+             } else {
+               metaByAttribute[attribute] = true;

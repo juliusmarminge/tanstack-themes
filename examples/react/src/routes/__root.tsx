@@ -7,14 +7,18 @@ import {
   createRootRoute,
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
-import { ThemeProvider, themeColorMetaTags } from "@tanstack-themes/react";
+import { ThemeProvider, getThemeColorMetaTags } from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../themes";
 
 export const Route = createRootRoute({
-  head: () => ({
-    links: [{ rel: "stylesheet", href: appCss }],
-    meta: [...themeColorMetaTags(THEME_COLOR_MAP)],
-  }),
+  head: () => {
+    const themeColorMetaTags = getThemeColorMetaTags(THEME_COLOR_MAP);
+    console.log("running head. Meta tags:", themeColorMetaTags);
+    return {
+      links: [{ rel: "stylesheet", href: appCss }],
+      meta: [...themeColorMetaTags],
+    };
+  },
   component: RootComponent,
 });
 

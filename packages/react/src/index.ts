@@ -11,9 +11,9 @@ export {
   setTheme,
   setVariant,
   toggleMode,
+  getThemeColorMetaTags,
   type Register,
   type ThemeColorMap,
-  themeColorMetaTags,
 } from "@tanstack-themes/core";
 
 export function useTheme<T = core.ThemeStore>(

@@ -37,6 +37,8 @@ export const getThemeDetectorScript = function (
           tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
         }
       }
+
+      console.log("[script] updated theme color meta tags", themeColorMetaTags);
     }
   }
   return `(${themeFn.toString()})(${JSON.stringify(fnArgs)});`;

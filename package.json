@@ -27,5 +27,8 @@
     "oxlint": "1.24.0",
     "turbo": "2.5.8",
     "vitest": "4.0.5"
+  },
+  "patchedDependencies": {
+    "@tanstack/react-router@1.133.36": "patches/@tanstack%2Freact-router@1.133.36.patch"
   }
 }

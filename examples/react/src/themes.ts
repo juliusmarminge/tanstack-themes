@@ -9,11 +9,12 @@ declare module "@tanstack-themes/react" {
   }
 }
 
+// These are the `--background` colors but in JS land as RGB hex values
 export const THEME_COLOR_MAP: ThemeColorMap = {
-  "default-light": "#ffffff",
-  "default-dark": "#000000",
-  "t3chat-light": "#ffffff",
-  "t3chat-dark": "#000000",
-  "catpuccin-light": "#ffffff",
-  "catpuccin-dark": "#000000",
+  "default-light": "#FFFFFF",
+  "default-dark": "#0A0A0A",
+  "t3chat-light": "#FAF5FA",
+  "t3chat-dark": "#221D27",
+  "catpuccin-light": "#EFF1F5",
+  "catpuccin-dark": "#181825",
 };
