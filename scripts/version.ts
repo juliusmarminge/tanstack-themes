@@ -20,3 +20,5 @@ for (const pkg of packages) {
   jsrJson.version = pkgJson.version;
   await Bun.write(`packages/${pkg}/jsr.json`, JSON.stringify(jsrJson, null, 2));
 }
+
+await Bun.$`bun install`;
