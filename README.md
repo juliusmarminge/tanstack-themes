@@ -1,9 +1,9 @@
 # Theming in Tanstack Start apps made easy
 
-![NPM Version](https://img.shields.io/npm/v/%40tanstack-themes%2Fcore)
-[![JSR](https://jsr.io/badges/@tanstack-themes/core)](https://jsr.io/@tanstack-themes/core)
-[![JSR Score](https://jsr.io/badges/@tanstack-themes/core/score)](https://jsr.io/@tanstack-themes/core)
-[![Socket Badge](https://socket.dev/api/badge/npm/package/@tanstack-themes/core)](https://socket.dev/npm/package/@tanstack-themes/core/overview)
+![NPM Version](https://img.shields.io/npm/v/%40tanstack-themes%2Freact)
+[![JSR](https://jsr.io/badges/@tanstack-themes/react)](https://jsr.io/@tanstack-themes/react)
+[![JSR Score](https://jsr.io/badges/@tanstack-themes/react/score)](https://jsr.io/@tanstack-themes/react)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@tanstack-themes/react)](https://socket.dev/npm/package/@tanstack-themes/react/overview)
 
 ## Installation
 
