@@ -28,6 +28,9 @@ import {
 export { getThemeDetectorScript } from "./script.ts";
 export type {
   Register,
+  ThemeMode,
+  ThemeVariant,
+  ResolvedTheme,
   ThemeColorMap,
   TanstackThemesConfig,
 } from "./config.ts";
