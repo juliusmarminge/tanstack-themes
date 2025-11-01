@@ -1,11 +1,20 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "juliusmarminge/tanstack-themes" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "juliusmarminge/tanstack-themes" }
+  ],
   "commit": false,
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@examples/react"
-  ]
+  "fixed": [
+    [
+      "@tanstack-themes/core",
+      "@tanstack-themes/react",
+      "@tanstack-themes/solid"
+    ]
+  ],
+
+  "ignore": ["@examples/react"]
 }
