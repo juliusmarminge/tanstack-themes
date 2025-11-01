@@ -1,5 +1,14 @@
 # @tanstack-themes/react
 
+## 0.0.2
+
+### Patch Changes
+
+- [#6](https://github.com/juliusmarminge/tanstack-themes/pull/6) [`979d1c4`](https://github.com/juliusmarminge/tanstack-themes/commit/979d1c4d4d72b8c56dd575acedaccbd752a62127) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - chore: prepare for jsr release
+
+- Updated dependencies [[`979d1c4`](https://github.com/juliusmarminge/tanstack-themes/commit/979d1c4d4d72b8c56dd575acedaccbd752a62127)]:
+  - @tanstack-themes/core@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes

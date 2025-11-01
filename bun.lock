@@ -42,7 +42,7 @@
     },
     "packages/core": {
       "name": "@tanstack-themes/core",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "devDependencies": {
         "@tanstack/router-core": "^1.134.4",
         "@tanstack/start-client-core": "^1.134.4",
@@ -57,7 +57,7 @@
     },
     "packages/react": {
       "name": "@tanstack-themes/react",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "dependencies": {
         "@tanstack-themes/core": "workspace:*",
       },
@@ -78,7 +78,7 @@
     },
     "packages/solid": {
       "name": "@tanstack-themes/solid",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "dependencies": {
         "@tanstack-themes/core": "workspace:*",
       },
