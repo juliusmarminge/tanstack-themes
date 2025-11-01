@@ -15,7 +15,7 @@
  */
 import * as React from "react";
 import { useStore } from "@tanstack/react-store";
-import { ScriptOnce, type AnyRouteMatch } from "@tanstack/react-router";
+import { ScriptOnce } from "@tanstack/react-router";
 import * as core from "@tanstack-themes/core";
 
 export type {
@@ -69,7 +69,7 @@ export function toggleMode(): void {
  */
 export function getThemeColorMetaTags(
   themeColorMap: core.ThemeColorMap,
-): AnyRouteMatch["meta"] {
+): Array<React.JSX.IntrinsicElements["meta"]> {
   return core.getThemeColorMetaTags(themeColorMap);
 }
 

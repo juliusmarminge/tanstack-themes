@@ -15,7 +15,7 @@
  */
 import * as Solid from "solid-js";
 import { useStore } from "@tanstack/solid-store";
-import { ScriptOnce, AnyRouteMatch } from "@tanstack/solid-router";
+import { ScriptOnce } from "@tanstack/solid-router";
 import * as core from "@tanstack-themes/core";
 
 export type {
@@ -62,7 +62,7 @@ export function setVariant(variant: core.ThemeVariant): void {
  */
 export function getThemeColorMetaTags(
   themeColorMap: core.ThemeColorMap,
-): AnyRouteMatch["meta"] {
+): Array<Solid.JSX.IntrinsicElements["meta"]> {
   return core.getThemeColorMetaTags(themeColorMap);
 }
 
