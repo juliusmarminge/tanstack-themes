@@ -1,5 +1,11 @@
 # @tanstack-themes/core
 
+## 0.0.3
+
+### Patch Changes
+
+- [#8](https://github.com/juliusmarminge/tanstack-themes/pull/8) [`ab2cb0e`](https://github.com/juliusmarminge/tanstack-themes/commit/ab2cb0e2b444008fd97241352f8153618cb8517e) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - chore: add jsdoc symbols
+
 ## 0.0.2
 
 ### Patch Changes
