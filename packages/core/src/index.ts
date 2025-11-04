@@ -42,6 +42,8 @@ export interface ThemeStore {
 }
 
 export const store = new Store<ThemeStore>({
+  // @ts-expect-error - this is a private property
+  __isHydrated: false,
   themeMode: "auto",
   resolvedTheme: "light",
   variant: "default",
@@ -75,6 +77,7 @@ export const hydrateStore = createClientOnlyFn(() => {
   const variant = getStoredThemeVariant();
   store.setState((state) => ({
     ...state,
+    __isHydrated: true,
     resolvedTheme,
     themeMode,
     variant,

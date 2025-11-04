@@ -7,9 +7,14 @@ import {
   createRootRoute,
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
-import { ThemeProvider, getThemeColorMetaTags } from "@tanstack-themes/react";
+import {
+  ThemeProvider,
+  getThemeColorMetaTags,
+  useThemeProps,
+} from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
+import { twMerge } from "tailwind-merge";
 
 export const Route = createRootRoute({
   head: () => {
@@ -25,20 +30,30 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <>
+      <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </>
   );
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const themeProps = useThemeProps();
+  const { className: bodyClassName, ...themeBodyProps } = themeProps.bodyProps;
+
+  console.log("running root document. Theme props:", themeProps);
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" {...themeProps.htmlProps}>
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
+      <body
+        className={twMerge("bg-background text-foreground", bodyClassName)}
+        {...themeBodyProps}
+      >
         {children}
         <Scripts />
       </body>

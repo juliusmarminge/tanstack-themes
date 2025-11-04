@@ -150,3 +150,40 @@ export function ThemeProvider(
     children: core.getThemeDetectorScript(props.themeColorLookup),
   });
 }
+
+/**
+ * Hook to get the props for the html and body elements.
+ * This is not required if you are not dynamically
+ * setting properties on the html and body elements.
+ */
+export function useThemeProps(): {
+  htmlProps: React.JSX.IntrinsicElements["html"];
+  bodyProps: React.JSX.IntrinsicElements["body"];
+} {
+  // @ts-expect-error - this is a private property
+  const isHydrated = useTheme((state) => state.__isHydrated);
+  const mode = useTheme((state) => state.themeMode);
+  const scheme = useTheme((state) => state.resolvedTheme);
+  const variant = useTheme((state) => state.variant);
+  return React.useMemo(() => {
+    if (!isHydrated) {
+      // If store is not yet hydrated, don't apply any props. The script will
+      // handle the initial DOM state. Just suppress hydration warnings.
+      return {
+        htmlProps: { suppressHydrationWarning: true },
+        bodyProps: { suppressHydrationWarning: true },
+      };
+    }
+    return {
+      htmlProps: {
+        className: mode === "auto" ? `${scheme} auto` : mode,
+        style: {
+          colorScheme: scheme,
+        },
+      },
+      bodyProps: {
+        className: `theme-${variant}`,
+      },
+    };
+  }, [mode, scheme, variant]);
+}
