@@ -1,5 +1,11 @@
 # @tanstack-themes/core
 
+## 0.0.4
+
+### Patch Changes
+
+- [#10](https://github.com/juliusmarminge/tanstack-themes/pull/10) [`182e5c1`](https://github.com/juliusmarminge/tanstack-themes/commit/182e5c1d17b827f5edd73e689f14b85342f132c1) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - feat: add `useThemeProps()` to sync html and body props
+
 ## 0.0.3
 
 ### Patch Changes
