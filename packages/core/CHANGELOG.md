@@ -1,5 +1,11 @@
 # @tanstack-themes/core
 
+## 0.0.6
+
+### Patch Changes
+
+- [`fee39f2`](https://github.com/juliusmarminge/tanstack-themes/commit/fee39f2d1a490092bd67ca49a490aba34892c773) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - chore: dummy release testing oidc
+
 ## 0.0.5
 
 ### Patch Changes
