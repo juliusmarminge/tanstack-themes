@@ -1,5 +1,12 @@
 # @tanstack-themes/react
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`f1fd240`](https://github.com/juliusmarminge/tanstack-themes/commit/f1fd24003f389e4a570849f7834f80a40a97b8a6)]:
+  - @tanstack-themes/core@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes
