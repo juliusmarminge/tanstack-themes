@@ -3,15 +3,15 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/solid-router";
 import { HydrationScript } from "solid-js/web";
 import type * as Solid from "solid-js";
 import { splitProps } from "solid-js";
-import appCss from "~/styles/app.css?url";
+import appCss from "../styles.css?url";
 import {
   getThemeColorMetaTags,
   ThemeProvider,
   useThemeProps,
 } from "@tanstack-themes/solid";
 import { twMerge } from "tailwind-merge";
-import { THEME_COLOR_MAP } from "~/lib/themes";
-import { seoLinks, seoMeta } from "~/lib/seo";
+import { THEME_COLOR_MAP } from "../lib/themes";
+import { seoLinks, seoMeta } from "../lib/seo";
 
 export const Route = createRootRoute({
   head: () => {

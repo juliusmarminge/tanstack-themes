@@ -1,9 +1,9 @@
 import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
 import { setTheme, setVariant, useTheme } from "@tanstack-themes/solid";
 import { For } from "solid-js";
-import { NativeSelect, NativeSelectOption } from "~/components/native-select";
-import { THEMES, type ThemeVariant } from "~/lib/themes";
-import { Button } from "~/components/button";
+import { NativeSelect, NativeSelectOption } from "../components/native-select";
+import { THEMES, type ThemeVariant } from "../lib/themes";
+import { Button } from "../components/button";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
