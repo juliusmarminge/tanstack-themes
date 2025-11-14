@@ -19,10 +19,9 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.16",
     "@tanstack/nitro-v2-vite-plugin": "^1.133.19",
-    "@types/node": "^22.10.2",
-    "combinate": "^1.1.11",
+    "@types/node": "^24.9.2",
     "tailwindcss": "^4.1.16",
-    "typescript": "^5.7.2",
+    "typescript": "^5.9.3",
     "vite": "^7.1.7",
     "vite-plugin-solid": "^2.11.10",
     "vite-tsconfig-paths": "^5.1.4"
