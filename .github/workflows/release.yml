@@ -22,7 +22,7 @@ jobs:
       - uses: ./.github/setup
 
       - name: Use latest npm
-        run: npm install -g npm@latest
+        run: bun add -g npm@latest
 
       - name: Build
         run: bun run build
