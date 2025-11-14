@@ -50,9 +50,11 @@ export const store = new Store<ThemeStore>({
 });
 
 export const setTheme = (themeMode: ThemeMode): void => {
+  const resolvedTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
   store.setState((state) => ({
     ...state,
     themeMode,
+    resolvedTheme,
   }));
   setStoredThemeMode(themeMode);
   updateDOM(themeMode, store.state.variant);
