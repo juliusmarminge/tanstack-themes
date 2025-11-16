@@ -174,6 +174,7 @@ export function ThemeProvider({
 
 /**
  * Hook to get the attributes for the html element.
+ * @remarks You only need to use this if you are dynamically setting properties on the html element.
  * @returns The attributes for the html element.
  */
 export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
@@ -198,6 +199,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
 
 /**
  * Hook to get the attributes for the body element.
+ * @remarks You only need to use this if you are dynamically setting properties on the body element.
  * @returns The attributes for the body element.
  */
 export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
