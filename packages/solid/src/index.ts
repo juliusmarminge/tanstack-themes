@@ -18,26 +18,46 @@ import { useStore } from "@tanstack/solid-store";
 import { ScriptOnce } from "@tanstack/solid-router";
 import * as core from "@tanstack-themes/core";
 
+export { THEME_MODES } from "@tanstack-themes/core";
 export type {
   Register,
   ThemeColorMap,
   TanstackThemesConfig,
+  ThemeMode,
+  ResolvedMode,
+  ThemeBase,
+  ThemeAccent,
 } from "@tanstack-themes/core";
 
 /**
  * Set the theme mode.
  * @param themeMode - The theme mode to set.
  */
-export function setTheme(themeMode: core.ThemeMode): void {
-  core.setTheme(themeMode);
+export function setThemeMode(themeMode: core.ThemeMode): void {
+  core.setThemeMode(themeMode);
 }
 
 /**
  * Set the variant.
- * @param variant - The variant to set.
+ * @param base - The base color to set.
  */
-export function setVariant(variant: core.ThemeVariant): void {
-  core.setVariant(variant);
+export function setThemeBase(base: core.ThemeBase): void {
+  core.setThemeBase(base);
+}
+
+/**
+ * Set the variant.
+ * @param accent - The accent color to set.
+ */
+export function setThemeAccent(accent: core.ThemeAccent): void {
+  core.setThemeAccent(accent);
+}
+
+/**
+ * Toggle the theme mode to the next theme mode between light, dark and auto.
+ */
+export function toggleThemeMode(): void {
+  core.toggleThemeMode();
 }
 
 /**
@@ -64,13 +84,6 @@ export function getThemeColorMetaTags(
   themeColorMap: core.ThemeColorMap,
 ): Array<Solid.JSX.IntrinsicElements["meta"]> {
   return core.getThemeColorMetaTags(themeColorMap);
-}
-
-/**
- * Toggle the theme mode to the next theme mode between light, dark and auto.
- */
-export function toggleMode(): void {
-  core.toggleMode();
 }
 
 /**
@@ -128,15 +141,22 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider(
-  props: Solid.ParentProps<Partial<core.TanstackThemesConfig>>,
-): Solid.JSX.Element {
-  const mode = useTheme((state) => state.themeMode);
+export function ThemeProvider({
+  defaultBase,
+  defaultAccent,
+  ...config
+}: Solid.ParentProps<
+  Partial<core.TanstackThemesConfig> & {
+    defaultBase?: core.ThemeBase;
+    defaultAccent?: core.ThemeAccent;
+  }
+>): Solid.JSX.Element {
+  const mode = useTheme((state) => state.mode);
 
-  Solid.onMount(core.hydrateStore);
+  Solid.onMount(() => core.hydrateStore(defaultBase, defaultAccent));
 
   Solid.createEffect(() => {
-    core.setConfig(props);
+    core.setConfig(config);
   });
 
   Solid.createEffect(() => {
@@ -146,7 +166,7 @@ export function ThemeProvider(
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(props.themeColorLookup),
+    children: core.getThemeDetectorScript(config.themeColorLookup),
   });
 }
 
@@ -155,34 +175,45 @@ export function ThemeProvider(
  * This is not required if you are not dynamically
  * setting properties on the html and body elements.
  */
-export function useThemeProps(): Solid.Accessor<{
-  htmlProps: Solid.JSX.IntrinsicElements["html"];
-  bodyProps: Solid.JSX.IntrinsicElements["body"];
-}> {
+export function useHtmlAttributes(): Solid.Accessor<
+  Solid.JSX.IntrinsicElements["html"]
+> {
   // @ts-expect-error - this is a private property
   const isHydrated = useTheme((state) => state.__isHydrated);
-  const mode = useTheme((state) => state.themeMode);
-  const scheme = useTheme((state) => state.resolvedTheme);
-  const variant = useTheme((state) => state.variant);
+  const mode = useTheme((state) => state.mode);
+  const scheme = useTheme((state) => state.resolvedMode);
   return Solid.createMemo(() => {
     if (!isHydrated()) {
       // If store is not yet hydrated, don't apply any props. The script will
       // handle the initial DOM state. Just suppress hydration warnings.
       return {
-        htmlProps: { suppressHydrationWarning: true },
-        bodyProps: { suppressHydrationWarning: true },
+        suppressHydrationWarning: true,
       };
     }
     return {
-      htmlProps: {
-        className: mode() === "auto" ? `${scheme()} auto` : mode(),
-        style: {
-          colorScheme: scheme(),
-        },
+      class: mode() === "auto" ? `${scheme()} auto` : mode(),
+      style: {
+        colorScheme: scheme(),
       },
-      bodyProps: {
-        class: `theme-${variant()}`,
-      },
+    };
+  });
+}
+
+export function useBodyAttributes(): Solid.Accessor<
+  Solid.JSX.IntrinsicElements["body"]
+> {
+  // @ts-expect-error - this is a private property
+  const isHydrated = useTheme((state) => state.__isHydrated);
+  const base = useTheme((state) => state.base);
+  const accent = useTheme((state) => state.accent);
+  return Solid.createMemo(() => {
+    if (!isHydrated()) {
+      return {
+        suppressHydrationWarning: true,
+      };
+    }
+    return {
+      class: `theme-${base()} theme-${accent()}`,
     };
   });
 }

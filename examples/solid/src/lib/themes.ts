@@ -5,7 +5,7 @@ export type ThemeVariant = (typeof THEMES)[number];
 
 declare module "@tanstack-themes/solid" {
   interface Register {
-    variant: ThemeVariant;
+    base: ThemeVariant;
   }
 }
 
