@@ -1,14 +1,14 @@
-import { VALID_THEME_MODES, ThemeMode, ThemeColorMap } from "./config.ts";
+import { THEME_MODES, ThemeColorMap } from "./config.ts";
 
 export const getThemeDetectorScript = function (
   themeColorLookup: ThemeColorMap | undefined,
 ) {
-  const fnArgs = [VALID_THEME_MODES, themeColorLookup] as const;
+  const fnArgs = [THEME_MODES, themeColorLookup] as const;
 
   function themeFn([validThemeModes, themeColorLookup]: typeof fnArgs) {
     const storedTheme = localStorage.getItem("theme-mode") ?? "auto";
-    const validTheme = validThemeModes.includes(storedTheme as ThemeMode)
-      ? (storedTheme as ThemeMode)
+    const validTheme = validThemeModes.includes(storedTheme)
+      ? storedTheme
       : "auto";
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const resolvedTheme = mql.matches ? "dark" : "light";
@@ -21,8 +21,11 @@ export const getThemeDetectorScript = function (
       document.documentElement.style.colorScheme = validTheme;
     }
 
-    const storedVariant = localStorage.getItem("theme-variant") ?? "default";
-    document.body.classList.add(`theme-${storedVariant}`);
+    const storedBase = localStorage.getItem("theme-base") ?? "default";
+    document.body.classList.add(`theme-${storedBase}`);
+
+    const storedAccent = localStorage.getItem("theme-accent") ?? "default";
+    document.body.classList.add(`theme-${storedAccent}`);
 
     if (themeColorLookup) {
       const themeColorMetaTags =
@@ -32,17 +35,15 @@ export const getThemeDetectorScript = function (
       for (const tag of themeColorMetaTags) {
         if (validTheme === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
-            tag.content = themeColorLookup[`${storedVariant}-light`];
+            tag.content = themeColorLookup[`${storedBase}-light`];
           } else if (tag.media === "(prefers-color-scheme: dark)") {
-            tag.content = themeColorLookup[`${storedVariant}-dark`];
+            tag.content = themeColorLookup[`${storedBase}-dark`];
           }
         } else {
-          tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
+          tag.content = themeColorLookup[`${storedBase}-${validTheme}`];
           tag.media = "";
         }
       }
-
-      console.log("[script] updated theme color meta tags", themeColorMetaTags);
     }
   }
   return `(${themeFn.toString()})(${JSON.stringify(fnArgs)});`;

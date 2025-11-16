@@ -1,20 +1,29 @@
 import type { ThemeColorMap } from "@tanstack-themes/react";
 
-export const THEMES = ["default", "t3chat", "catpuccin"] as const;
-export type ThemeVariant = (typeof THEMES)[number];
+export const BASE_COLORS = ["stone", "zinc", "slate"] as const;
+export type BaseColor = (typeof BASE_COLORS)[number];
+
+export const ACCENT_COLORS = [
+  "default",
+  "sapphire",
+  "emerald",
+  "amber",
+] as const;
+export type AccentColor = (typeof ACCENT_COLORS)[number];
 
 declare module "@tanstack-themes/react" {
   interface Register {
-    variant: (typeof THEMES)[number];
+    base: BaseColor;
+    accent: AccentColor;
   }
 }
 
 // These are the `--background` colors but in JS land as RGB hex values
 export const THEME_COLOR_MAP: ThemeColorMap = {
-  "default-light": "#FFFFFF",
-  "default-dark": "#0A0A0A",
-  "t3chat-light": "#FAF5FA",
-  "t3chat-dark": "#221D27",
-  "catpuccin-light": "#EFF1F5",
-  "catpuccin-dark": "#181825",
+  "stone-light": "#FFFFFF",
+  "stone-dark": "#0C0A09",
+  "zinc-light": "#FFFFFF",
+  "zinc-dark": "#09090B",
+  "slate-light": "#FFFFFF",
+  "slate-dark": "#020618",
 };

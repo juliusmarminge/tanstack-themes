@@ -1,12 +1,15 @@
+/// <reference types="./ts-reset.d.ts" />
 import {
   createClientOnlyFn,
   createIsomorphicFn,
 } from "@tanstack/start-client-core";
 import {
   ThemeMode,
-  VALID_THEME_MODES,
-  ResolvedTheme,
+  THEME_MODES,
+  ResolvedMode,
   configStore,
+  ThemeBase,
+  ThemeAccent,
 } from "./config.ts";
 
 export const getStoredThemeMode = createIsomorphicFn()
@@ -14,45 +17,65 @@ export const getStoredThemeMode = createIsomorphicFn()
   .client((): ThemeMode => {
     try {
       const storedTheme = localStorage.getItem("theme-mode");
-      return VALID_THEME_MODES.includes(storedTheme as ThemeMode)
-        ? (storedTheme as ThemeMode)
-        : "auto";
+      if (!storedTheme) return "auto";
+      return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
     } catch {
       return "auto";
     }
   });
 
-export const setStoredThemeMode = createClientOnlyFn((theme: ThemeMode) => {
+export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
-    const parsedTheme = VALID_THEME_MODES.includes(theme) ? theme : "auto";
+    const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
     localStorage.setItem("theme-mode", parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
   }
 });
 
-export const getStoredThemeVariant = createIsomorphicFn()
-  .server((defaultVariant: string = "default") => defaultVariant)
-  .client((defaultVariant = "default") => {
+export const getStoredThemeBase = createIsomorphicFn()
+  .server((defaultBase: ThemeBase = "default") => defaultBase)
+  .client((defaultBase = "default") => {
     try {
-      const storedVariant = localStorage.getItem("theme-variant");
-      return storedVariant ?? defaultVariant;
+      const storedBase = localStorage.getItem("theme-base");
+      return storedBase ?? defaultBase;
     } catch {
-      return defaultVariant;
+      return defaultBase;
     }
   });
 
-export const setStoredThemeVariant = createClientOnlyFn((variant: string) => {
+export const setStoredThemeBase = createClientOnlyFn((base: ThemeBase) => {
   try {
-    localStorage.setItem("theme-variant", variant);
+    localStorage.setItem("theme-base", base);
   } catch {
     // Silently fail if localStorage is unavailable
   }
 });
 
+export const getStoredThemeAccent = createIsomorphicFn()
+  .server((defaultAccent: ThemeAccent = "default") => defaultAccent)
+  .client((defaultAccent = "default") => {
+    try {
+      const storedAccent = localStorage.getItem("theme-accent");
+      return storedAccent ?? defaultAccent;
+    } catch {
+      return defaultAccent;
+    }
+  });
+
+export const setStoredThemeAccent = createClientOnlyFn(
+  (accent: ThemeAccent) => {
+    try {
+      localStorage.setItem("theme-accent", accent);
+    } catch {
+      // Silently fail if localStorage is unavailable
+    }
+  },
+);
+
 export const getSystemTheme = createIsomorphicFn()
-  .server((): ResolvedTheme => "light")
-  .client((): ResolvedTheme => {
+  .server((): ResolvedMode => "light")
+  .client((): ResolvedMode => {
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     return mql.matches ? "dark" : "light";
   });
@@ -79,7 +102,7 @@ export const disableAnimation = createClientOnlyFn((nonce?: string) => {
 });
 
 export const updateDOM = createClientOnlyFn(
-  (themeMode: ThemeMode, variant: string) => {
+  (themeMode: ThemeMode, base: ThemeBase, accent: ThemeAccent) => {
     const shouldDisableAnimation = configStore.state.disableAnimation;
     const themeColorLookup = configStore.state.themeColorLookup;
 
@@ -88,15 +111,16 @@ export const updateDOM = createClientOnlyFn(
 
     // 1. Update the root element classList (theme-mode)
     const root = document.documentElement;
-    root.classList.remove(...VALID_THEME_MODES);
+    root.classList.remove(...THEME_MODES);
     root.classList.add(newTheme);
     if (themeMode === "auto") root.classList.add("auto");
 
-    // 2. Update the body element classList (theme-variant)
+    // 2. Update the body element classList (theme-base & theme-accent)
     const bodyClss = Array.from(document.body.classList.values());
-    const variantClasses = bodyClss.filter((cls) => cls.startsWith("theme-"));
-    document.body.classList.remove(...variantClasses);
-    document.body.classList.add(`theme-${variant}`);
+    const classesToRemove = bodyClss.filter((cls) => cls.startsWith("theme-"));
+    document.body.classList.remove(...classesToRemove);
+    document.body.classList.add(`theme-${base}`);
+    document.body.classList.add(`theme-${accent}`);
 
     // 3. Update the root element style.colorScheme
     document.documentElement.style.colorScheme = newTheme;
@@ -110,17 +134,17 @@ export const updateDOM = createClientOnlyFn(
       themeColorMetaTags.forEach((tag, idx) => {
         if (themeMode === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
-            tag.content = themeColorLookup[`${variant}-light`];
+            tag.content = themeColorLookup[`${base}-light`];
           } else if (tag.media === "(prefers-color-scheme: dark)") {
-            tag.content = themeColorLookup[`${variant}-dark`];
+            tag.content = themeColorLookup[`${base}-dark`];
           } else if (tag.media === "") {
             const isLightTag = idx === 0;
             tag.content =
-              themeColorLookup[`${variant}-${isLightTag ? "light" : "dark"}`];
+              themeColorLookup[`${base}-${isLightTag ? "light" : "dark"}`];
             tag.media = `(prefers-color-scheme: ${isLightTag ? "light" : "dark"})`;
           }
         } else {
-          tag.content = themeColorLookup[`${variant}-${newTheme}`];
+          tag.content = themeColorLookup[`${base}-${newTheme}`];
           tag.media = "";
         }
       });

@@ -6,9 +6,10 @@
  * - Render {@link ThemeProvider} just inside your app's body tag to allow for
  *   state synchronization and automatic theme detection.
  * - Use {@link useTheme} to access the current state of the theme store.
- * - Use {@link setTheme} to get the meta tags for the theme color.
- * - Use {@link setVariant} to set the variant of the theme.
- * - Use {@link toggleMode} to toggle the theme mode.
+ * - Use {@link setThemeMode} to get the meta tags for the theme color.
+ * - Use {@link setThemeBase} to set the base color of the theme.
+ * - Use {@link setThemeAccent} to set the accent color of the theme.
+ * - Use {@link toggleThemeMode} to toggle the theme mode.
  * - Use {@link getThemeColorMetaTags} to get the meta tags for the theme color.
  *
  * @module
@@ -18,33 +19,46 @@ import { useStore } from "@tanstack/react-store";
 import { ScriptOnce } from "@tanstack/react-router";
 import * as core from "@tanstack-themes/core";
 
+export { THEME_MODES } from "@tanstack-themes/core";
 export type {
   Register,
   ThemeColorMap,
   TanstackThemesConfig,
+  ThemeMode,
+  ResolvedMode,
+  ThemeBase,
+  ThemeAccent,
 } from "@tanstack-themes/core";
 
 /**
  * Set the theme mode.
  * @param themeMode - The theme mode to set.
  */
-export function setTheme(themeMode: core.ThemeMode): void {
-  core.setTheme(themeMode);
+export function setThemeMode(themeMode: core.ThemeMode): void {
+  core.setThemeMode(themeMode);
 }
 
 /**
  * Set the variant.
- * @param variant - The variant to set.
+ * @param base - The base color to set.
  */
-export function setVariant(variant: core.ThemeVariant): void {
-  core.setVariant(variant);
+export function setThemeBase(base: core.ThemeBase): void {
+  core.setThemeBase(base);
+}
+
+/**
+ * Set the variant.
+ * @param accent - The accent color to set.
+ */
+export function setThemeAccent(accent: core.ThemeAccent): void {
+  core.setThemeAccent(accent);
 }
 
 /**
  * Toggle the theme mode to the next theme mode between light, dark and auto.
  */
-export function toggleMode(): void {
-  core.toggleMode();
+export function toggleThemeMode(): void {
+  core.toggleThemeMode();
 }
 
 /**
@@ -85,14 +99,14 @@ export function getThemeColorMetaTags(
  * ```tsx
  * function MyComponent() {
  *   const theme = useTheme();
- *   return <div>{theme.themeMode}</div>;
+ *   return <div>{theme.mode}</div>;
  * }
  * ```
  *
  * @example MyComponent will only re-render when the theme mode changes.
  * ```tsx
  * function MyComponent() {
- *   const themeMode = useTheme((state) => state.themeMode);
+ *   const themeMode = useTheme((state) => state.mode);
  *   return <div>{themeMode}</div>;
  * }
  * ```
@@ -128,18 +142,25 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider(
-  props: React.PropsWithChildren<Partial<core.TanstackThemesConfig>>,
-): React.ReactNode {
-  const mode = useTheme((state) => state.themeMode);
+export function ThemeProvider({
+  defaultBase,
+  defaultAccent,
+  ...config
+}: React.PropsWithChildren<
+  Partial<core.TanstackThemesConfig> & {
+    defaultBase?: core.ThemeBase;
+    defaultAccent?: core.ThemeAccent;
+  }
+>): React.ReactNode {
+  const mode = useTheme((state) => state.mode);
 
   React.useEffect(() => {
-    core.hydrateStore();
+    core.hydrateStore(defaultBase, defaultAccent);
   }, []);
 
   React.useEffect(() => {
-    core.setConfig(props);
-  }, [props]);
+    core.setConfig(config);
+  }, [config]);
 
   React.useEffect(() => {
     if (mode !== "auto") return;
@@ -147,7 +168,7 @@ export function ThemeProvider(
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(props.themeColorLookup),
+    children: core.getThemeDetectorScript(config.themeColorLookup),
   });
 }
 
@@ -162,9 +183,10 @@ export function useThemeProps(): {
 } {
   // @ts-expect-error - this is a private property
   const isHydrated = useTheme((state) => state.__isHydrated);
-  const mode = useTheme((state) => state.themeMode);
-  const scheme = useTheme((state) => state.resolvedTheme);
-  const variant = useTheme((state) => state.variant);
+  const mode = useTheme((state) => state.mode);
+  const scheme = useTheme((state) => state.resolvedMode);
+  const base = useTheme((state) => state.base);
+  const accent = useTheme((state) => state.accent);
   return React.useMemo(() => {
     if (!isHydrated) {
       // If store is not yet hydrated, don't apply any props. The script will
@@ -182,8 +204,8 @@ export function useThemeProps(): {
         },
       },
       bodyProps: {
-        className: `theme-${variant}`,
+        className: `theme-${base} theme-${accent}`,
       },
     };
-  }, [mode, scheme, variant]);
+  }, [mode, scheme, base, accent]);
 }

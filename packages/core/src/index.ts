@@ -10,46 +10,54 @@ import { Store } from "@tanstack/store";
 import type {
   ThemeMode,
   Register,
-  ResolvedTheme,
-  ThemeVariant,
   ThemeColorMap,
   TanstackThemesConfig,
+  ResolvedMode,
+  ThemeAccent,
+  ThemeBase,
 } from "./config.ts";
 import { configStore } from "./config.ts";
 import {
   updateDOM,
   getStoredThemeMode,
   getSystemTheme,
-  getStoredThemeVariant,
+  getStoredThemeBase,
   getNextThemeMode,
   setStoredThemeMode,
-  setStoredThemeVariant,
+  setStoredThemeBase,
+  setStoredThemeAccent,
+  getStoredThemeAccent,
 } from "./utils.ts";
+
 export { getThemeDetectorScript } from "./script.ts";
+export { THEME_MODES } from "./config.ts";
 export type {
   Register,
   ThemeMode,
-  ThemeVariant,
-  ResolvedTheme,
+  ResolvedMode,
+  ThemeBase,
+  ThemeAccent,
   ThemeColorMap,
   TanstackThemesConfig,
 } from "./config.ts";
 
 export interface ThemeStore {
-  themeMode: ThemeMode;
-  resolvedTheme: ResolvedTheme;
-  variant: ThemeVariant;
+  mode: ThemeMode;
+  resolvedMode: ResolvedMode;
+  base: ThemeBase;
+  accent: ThemeAccent;
 }
 
 export const store = new Store<ThemeStore>({
   // @ts-expect-error - this is a private property
   __isHydrated: false,
   themeMode: "auto",
-  resolvedTheme: "light",
-  variant: "default",
+  resolvedMode: "light",
+  base: "default",
+  accent: "default",
 });
 
-export const setTheme = (themeMode: ThemeMode): void => {
+export const setThemeMode = (themeMode: ThemeMode): void => {
   const resolvedTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
   store.setState((state) => ({
     ...state,
@@ -57,34 +65,50 @@ export const setTheme = (themeMode: ThemeMode): void => {
     resolvedTheme,
   }));
   setStoredThemeMode(themeMode);
-  updateDOM(themeMode, store.state.variant);
+  updateDOM(themeMode, store.state.base, store.state.accent);
 };
 
-export const setVariant = (variant: ThemeVariant): void => {
+export const setThemeBase = (base: ThemeBase): void => {
   store.setState((state) => ({
     ...state,
-    variant,
+    base,
   }));
-  setStoredThemeVariant(variant);
-  updateDOM(store.state.themeMode, variant);
+  setStoredThemeBase(base);
+  updateDOM(store.state.mode, store.state.base, store.state.accent);
 };
 
-export const toggleMode = (): void => {
-  setTheme(getNextThemeMode(store.state.themeMode));
-};
-
-export const hydrateStore = createClientOnlyFn(() => {
-  const themeMode = getStoredThemeMode();
-  const resolvedTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
-  const variant = getStoredThemeVariant();
+export const setThemeAccent = (accent: ThemeAccent): void => {
   store.setState((state) => ({
     ...state,
-    __isHydrated: true,
-    resolvedTheme,
-    themeMode,
-    variant,
+    accent,
   }));
-});
+  setStoredThemeAccent(accent);
+  updateDOM(store.state.mode, store.state.base, store.state.accent);
+};
+
+export const toggleThemeMode = (): void => {
+  setThemeMode(getNextThemeMode(store.state.mode));
+};
+
+export const hydrateStore = createClientOnlyFn(
+  (
+    defaultBase: ThemeBase = "default",
+    defaultAccent: ThemeAccent = "default",
+  ) => {
+    const mode = getStoredThemeMode();
+    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
+    const base = getStoredThemeBase(defaultBase);
+    const accent = getStoredThemeAccent(defaultAccent);
+    store.setState((state) => ({
+      ...state,
+      __isHydrated: true,
+      mode,
+      resolvedMode,
+      base,
+      accent,
+    }));
+  },
+);
 
 export const setConfig = (config: Partial<TanstackThemesConfig>) => {
   configStore.setState((state) => ({
@@ -96,12 +120,13 @@ export const setConfig = (config: Partial<TanstackThemesConfig>) => {
 export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handler = () => {
-    const variant = getStoredThemeVariant();
-    updateDOM("auto", variant);
+    const mode = getStoredThemeMode();
+    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
+    updateDOM(mode, store.state.base, store.state.accent);
     store.setState((state) => ({
       ...state,
-      resolvedTheme:
-        state.themeMode === "auto" ? getSystemTheme() : state.themeMode,
+      mode,
+      resolvedMode,
     }));
   };
   mediaQuery.addEventListener("change", handler);
@@ -111,17 +136,17 @@ export const setupPreferredListener = createClientOnlyFn(() => {
 export const getThemeColorMetaTags = createIsomorphicFn()
   .client((_: ThemeColorMap) => [])
   .server((themeColorMap: ThemeColorMap) => {
-    const variant = getStoredThemeVariant();
+    const base = getStoredThemeBase();
     return [
       {
         name: "theme-color",
         media: "(prefers-color-scheme: light)",
-        content: themeColorMap[`${variant}-light`],
+        content: themeColorMap[`${base}-light`],
       },
       {
         name: "theme-color",
         media: "(prefers-color-scheme: dark)",
-        content: themeColorMap[`${variant}-dark`],
+        content: themeColorMap[`${base}-dark`],
       },
     ];
   });
