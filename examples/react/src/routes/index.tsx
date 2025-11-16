@@ -5,7 +5,6 @@ import {
   setThemeMode,
   setThemeAccent,
   THEME_MODES,
-  // setAccent,
 } from "@tanstack-themes/react";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import {
