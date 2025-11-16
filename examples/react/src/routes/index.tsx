@@ -6,7 +6,7 @@ import {
   setThemeAccent,
   THEME_MODES,
 } from "@tanstack-themes/react";
-import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import {
   Select,
   SelectItem,
@@ -51,7 +51,7 @@ function ThemeModeSelect() {
             <div className="[&>svg]:size-4 [&>svg]:scale-0 [&>svg]:absolute [&>svg]:top-1/2 [&>svg]:-translate-y-1/2">
               <SunIcon className="scale-100! dark:scale-0! auto:scale-0! " />
               <MoonIcon className="scale-0! dark:scale-100! auto:scale-0! " />
-              <DesktopIcon className="scale-0! dark:scale-0! auto:scale-100! " />
+              <MonitorIcon className="scale-0! dark:scale-0! auto:scale-100! " />
               <span className="pl-6">{hydrated ? item : "Mode"}</span>
             </div>
           )}
