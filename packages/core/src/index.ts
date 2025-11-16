@@ -57,15 +57,15 @@ export const store = new Store<ThemeStore>({
   accent: "default",
 });
 
-export const setThemeMode = (themeMode: ThemeMode): void => {
-  const resolvedTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
+export const setThemeMode = (mode: ThemeMode): void => {
+  const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
   store.setState((state) => ({
     ...state,
-    themeMode,
-    resolvedTheme,
+    mode,
+    resolvedMode,
   }));
-  setStoredThemeMode(themeMode);
-  updateDOM(themeMode, store.state.base, store.state.accent);
+  setStoredThemeMode(mode);
+  updateDOM(mode, store.state.base, store.state.accent);
 };
 
 export const setThemeBase = (base: ThemeBase): void => {
