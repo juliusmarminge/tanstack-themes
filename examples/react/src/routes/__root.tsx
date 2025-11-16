@@ -10,11 +10,11 @@ import appCss from "../styles.css?url";
 import {
   ThemeProvider,
   getThemeColorMetaTags,
-  useThemeProps,
+  useHtmlAttributes,
+  useBodyAttributes,
 } from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
-import { twMerge } from "tailwind-merge";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -40,18 +40,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const themeProps = useThemeProps();
-  const { className: bodyClassName, ...themeBodyProps } = themeProps.bodyProps;
+  const htmlAttributes = useHtmlAttributes();
+  const bodyAttributes = useBodyAttributes();
 
   return (
-    <html lang="en" {...themeProps.htmlProps}>
+    <html lang="en" {...htmlAttributes}>
       <head>
         <HeadContent />
       </head>
-      <body
-        className={twMerge("bg-background text-foreground", bodyClassName)}
-        {...themeBodyProps}
-      >
+      <body {...bodyAttributes}>
         {children}
         <Scripts />
       </body>
