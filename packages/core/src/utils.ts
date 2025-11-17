@@ -17,21 +17,24 @@ export const resolveThemeMode = (themeMode: ThemeMode): ResolvedMode => {
 };
 
 export const getStoredThemeMode = createIsomorphicFn()
-  .server((): ThemeMode => "auto")
+  .server((): ThemeMode => getConfigValue("defaultMode"))
   .client((): ThemeMode => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
       const storedTheme = localStorage.getItem(`${keyPrefix}mode`);
-      if (!storedTheme) return "auto";
-      return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
+      return storedTheme && THEME_MODES.includes(storedTheme)
+        ? storedTheme
+        : getConfigValue("defaultMode");
     } catch {
-      return "auto";
+      return getConfigValue("defaultMode");
     }
   });
 
 export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
-    const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
+    const parsedTheme = THEME_MODES.includes(themeMode)
+      ? themeMode
+      : getConfigValue("defaultMode");
     const keyPrefix = getConfigValue("localStorageKeyPrefix");
     localStorage.setItem(`${keyPrefix}mode`, parsedTheme);
   } catch {
