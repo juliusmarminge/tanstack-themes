@@ -164,8 +164,8 @@ export function useHtmlAttributes(): Solid.Accessor<
 > {
   // @ts-expect-error - this is a private property
   const isHydrated = useTheme((state) => state.__isHydrated);
-  const mode = useTheme((state) => state.mode);
-  const variant = useTheme((state) => state.variant);
+  const mode = useTheme((state) => state.themeMode);
+  const scheme = useTheme((state) => state.resolvedTheme);
   return Solid.createMemo(() => {
     if (!isHydrated()) {
       // If store is not yet hydrated, don't apply any props. The script will
@@ -175,9 +175,9 @@ export function useHtmlAttributes(): Solid.Accessor<
       };
     }
     return {
-      class: mode() === "auto" ? `${variant()} auto` : mode(),
+      class: mode() === "auto" ? `${scheme()} auto` : mode(),
       style: {
-        colorScheme: variant(),
+        colorScheme: scheme(),
       },
     };
   });

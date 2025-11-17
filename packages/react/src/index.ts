@@ -163,8 +163,8 @@ export function ThemeProvider(
 export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
   // @ts-expect-error - this is a private property
   const isHydrated: boolean = useTheme((state) => state.__isHydrated);
-  const mode = useTheme((state) => state.mode);
-  const scheme = useTheme((state) => state.resolvedMode);
+  const mode = useTheme((state) => state.themeMode);
+  const scheme = useTheme((state) => state.resolvedTheme);
   return React.useMemo(() => {
     if (!isHydrated) {
       return {
@@ -188,8 +188,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
 export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
   // @ts-expect-error - this is a private property
   const isHydrated: boolean = useTheme((state) => state.__isHydrated);
-  const base = useTheme((state) => state.base);
-  const accent = useTheme((state) => state.accent);
+  const variant = useTheme((state) => state.variant);
   return React.useMemo(() => {
     if (!isHydrated) {
       return {
@@ -197,7 +196,7 @@ export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
       };
     }
     return {
-      className: `theme-${base} theme-${accent}`,
+      className: `theme-${variant}`,
     };
-  }, [isHydrated, base, accent]);
+  }, [isHydrated, variant]);
 }
