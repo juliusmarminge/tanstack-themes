@@ -49,12 +49,12 @@ export interface ThemeStore {
 }
 
 export const store = new Store<ThemeStore>({
-  // @ts-expect-error - this is a private property
-  __isHydrated: false,
-  themeMode: "auto",
+  mode: "auto",
   resolvedMode: "light",
   base: "default",
   accent: "default",
+  // @ts-expect-error - this is a private property
+  __isHydrated: false,
 });
 
 export const setThemeMode = (mode: ThemeMode): void => {
