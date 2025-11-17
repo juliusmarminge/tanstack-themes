@@ -36,14 +36,14 @@ export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
 });
 
 export const getStoredThemeBase = createIsomorphicFn()
-  .server((defaultBase: ThemeBase = "default") => defaultBase)
-  .client((defaultBase = "default") => {
+  .server(() => getConfigValue("defaultBase"))
+  .client(() => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
       const storedBase = localStorage.getItem(`${keyPrefix}theme-base`);
-      return storedBase ?? defaultBase;
+      return storedBase ?? getConfigValue("defaultBase");
     } catch {
-      return defaultBase;
+      return getConfigValue("defaultBase");
     }
   });
 
@@ -57,14 +57,14 @@ export const setStoredThemeBase = createClientOnlyFn((base: ThemeBase) => {
 });
 
 export const getStoredThemeAccent = createIsomorphicFn()
-  .server((defaultAccent: ThemeAccent = "default") => defaultAccent)
-  .client((defaultAccent = "default") => {
+  .server(() => getConfigValue("defaultAccent"))
+  .client(() => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
       const storedAccent = localStorage.getItem(`${keyPrefix}theme-accent`);
-      return storedAccent ?? defaultAccent;
+      return storedAccent ?? getConfigValue("defaultAccent");
     } catch {
-      return defaultAccent;
+      return getConfigValue("defaultAccent");
     }
   });
 

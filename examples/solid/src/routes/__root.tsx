@@ -32,7 +32,11 @@ function RootDocument(props: { children: Solid.JSX.Element }) {
       <body {...bodyAttributes()}>
         <HeadContent />
         {props.children}
-        <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
+        <ThemeProvider
+          themeColorLookup={THEME_COLOR_MAP}
+          defaultBase="t3chat"
+          localStorageKeyPrefix="tst2-"
+        />
         <Scripts />
       </body>
     </html>

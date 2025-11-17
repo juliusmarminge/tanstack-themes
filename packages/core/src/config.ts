@@ -17,12 +17,18 @@ export type ThemeAccent = Register extends { accent: string }
 export type ThemeColorMap = Record<`${ThemeBase}-${ResolvedMode}`, string>;
 
 export interface TanstackThemesConfig {
+  defaultMode: ThemeMode;
+  defaultBase: ThemeBase;
+  defaultAccent: ThemeAccent;
   themeColorLookup: ThemeColorMap | undefined;
   disableAnimation: boolean;
   localStorageKeyPrefix: string;
 }
 
 const configStore = new Store<TanstackThemesConfig>({
+  defaultMode: "auto",
+  defaultBase: "default",
+  defaultAccent: "default",
   themeColorLookup: undefined,
   disableAnimation: true,
   localStorageKeyPrefix: "",

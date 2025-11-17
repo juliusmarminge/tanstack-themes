@@ -141,29 +141,23 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider({
-  defaultBase,
-  defaultAccent,
-  ...config
-}: Solid.ParentProps<
-  Partial<core.TanstackThemesConfig> & {
-    defaultBase?: core.ThemeBase;
-    defaultAccent?: core.ThemeAccent;
-  }
->): Solid.JSX.Element {
+export function ThemeProvider(
+  props: Solid.ParentProps<
+    Partial<core.TanstackThemesConfig> & {
+      defaultBase?: core.ThemeBase;
+      defaultAccent?: core.ThemeAccent;
+    }
+  >,
+): Solid.JSX.Element {
   const mode = useTheme((state) => state.mode);
 
-  const configWithDefaults = {
-    ...core.getConfigValue(),
-    ...config,
-  };
-
-  Solid.onMount(() =>
-    core.hydrateStore(configWithDefaults, defaultBase, defaultAccent),
-  );
+  Solid.onMount(() => {
+    core.setConfig(props);
+    core.hydrateStore();
+  });
 
   Solid.createEffect(() => {
-    core.setConfig(config);
+    core.setConfig(props);
   });
 
   Solid.createEffect(() => {
@@ -173,7 +167,10 @@ export function ThemeProvider({
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(configWithDefaults),
+    children: core.getThemeDetectorScript({
+      ...core.getConfigValue(),
+      ...props,
+    }),
   });
 }
 

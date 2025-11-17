@@ -142,30 +142,20 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider({
-  defaultBase,
-  defaultAccent,
-  ...config
-}: React.PropsWithChildren<
-  Partial<core.TanstackThemesConfig> & {
-    defaultBase?: core.ThemeBase;
-    defaultAccent?: core.ThemeAccent;
-  }
->): React.ReactNode {
+export function ThemeProvider(
+  props: React.PropsWithChildren<
+    Partial<core.TanstackThemesConfig> & {
+      defaultBase?: core.ThemeBase;
+      defaultAccent?: core.ThemeAccent;
+    }
+  >,
+): React.ReactNode {
   const mode = useTheme((state) => state.mode);
 
-  const configWithDefaults = {
-    ...core.getConfigValue(),
-    ...config,
-  };
-
   React.useEffect(() => {
-    core.hydrateStore(configWithDefaults, defaultBase, defaultAccent);
-  }, [configWithDefaults]);
-
-  React.useEffect(() => {
-    core.setConfig(config);
-  }, [config]);
+    core.setConfig(props);
+    core.hydrateStore();
+  }, [props]);
 
   React.useEffect(() => {
     if (mode !== "auto") return;
@@ -173,7 +163,10 @@ export function ThemeProvider({
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(configWithDefaults),
+    children: core.getThemeDetectorScript({
+      ...core.getConfigValue(),
+      ...props,
+    }),
   });
 }
 

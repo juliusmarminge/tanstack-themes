@@ -88,24 +88,18 @@ export const toggleThemeMode = (): void => {
   setThemeMode(getNextThemeMode(store.state.mode));
 };
 
-export const hydrateStore = createClientOnlyFn(
-  (
-    config: TanstackThemesConfig,
-    defaultBase: ThemeBase = "default",
-    defaultAccent: ThemeAccent = "default",
-  ) => {
-    const mode = getStoredThemeMode();
-    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
-    const base = getStoredThemeBase(defaultBase);
-    const accent = getStoredThemeAccent(defaultAccent);
-    store.setState({
-      mode,
-      resolvedMode,
-      base,
-      accent,
-    });
-  },
-);
+export const hydrateStore = createClientOnlyFn(() => {
+  const mode = getStoredThemeMode();
+  const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
+  const base = getStoredThemeBase();
+  const accent = getStoredThemeAccent();
+  store.setState({
+    mode,
+    resolvedMode,
+    base,
+    accent,
+  });
+});
 
 export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

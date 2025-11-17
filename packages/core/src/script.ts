@@ -5,30 +5,40 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
     THEME_MODES,
     config.themeColorLookup,
     config.localStorageKeyPrefix,
+    config.defaultMode,
+    config.defaultBase,
+    config.defaultAccent,
   ] as const;
 
-  function themeFn([themeModes, colors, keyPrefix]: typeof fnArgs) {
+  function themeFn([
+    themeModes,
+    colors,
+    keyPrefix,
+    dMode,
+    dBase,
+    dAccent,
+  ]: typeof fnArgs) {
     const d = document.documentElement;
     const b = document.body;
     const ls = localStorage;
 
-    const storedTheme = ls.getItem(`${keyPrefix}theme-mode`) ?? "auto";
-    const validTheme = themeModes.includes(storedTheme) ? storedTheme : "auto";
+    const storedMode = ls.getItem(`${keyPrefix}theme-mode`) ?? dMode;
+    const validMode = themeModes.includes(storedMode) ? storedMode : dMode;
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const resolvedTheme = mql.matches ? "dark" : "light";
 
-    if (validTheme === "auto") {
+    if (validMode === "auto") {
       d.classList.add(resolvedTheme, "auto");
       d.style.colorScheme = resolvedTheme;
     } else {
-      d.classList.add(validTheme);
-      d.style.colorScheme = validTheme;
+      d.classList.add(validMode);
+      d.style.colorScheme = validMode;
     }
 
-    const storedBase = ls.getItem(`${keyPrefix}theme-base`) ?? "default";
+    const storedBase = ls.getItem(`${keyPrefix}theme-base`) ?? dBase;
     b.classList.add(`theme-${storedBase}`);
 
-    const storedAccent = ls.getItem(`${keyPrefix}theme-accent`) ?? "default";
+    const storedAccent = ls.getItem(`${keyPrefix}theme-accent`) ?? dAccent;
     b.classList.add(`theme-${storedAccent}`);
 
     if (colors) {
@@ -37,14 +47,14 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
           "meta[name='theme-color']",
         );
       for (const tag of themeColorMetaTags) {
-        if (validTheme === "auto") {
+        if (validMode === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
             tag.content = colors[`${storedBase}-light`];
           } else if (tag.media === "(prefers-color-scheme: dark)") {
             tag.content = colors[`${storedBase}-dark`];
           }
         } else {
-          tag.content = colors[`${storedBase}-${validTheme}`];
+          tag.content = colors[`${storedBase}-${validMode}`];
           tag.media = "";
         }
       }
