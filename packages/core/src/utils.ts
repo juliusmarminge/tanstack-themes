@@ -12,6 +12,10 @@ import {
   THEME_MODES,
 } from "./config.ts";
 
+export const resolveThemeMode = (themeMode: ThemeMode): ResolvedMode => {
+  return themeMode === "auto" ? getSystemTheme() : themeMode;
+};
+
 export const getStoredThemeMode = createIsomorphicFn()
   .server((): ThemeMode => "auto")
   .client((): ThemeMode => {
@@ -114,7 +118,7 @@ export const updateDOM = createClientOnlyFn(
     const cleanup = getConfigValue("disableAnimation")
       ? disableAnimation()
       : undefined;
-    const newTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
+    const newTheme = resolveThemeMode(themeMode);
 
     // 1. Update the root element classList (theme-mode)
     const root = document.documentElement;

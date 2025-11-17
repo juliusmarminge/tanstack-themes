@@ -27,6 +27,7 @@ import {
   setStoredThemeBase,
   setStoredThemeAccent,
   getStoredThemeAccent,
+  resolveThemeMode,
 } from "./utils.ts";
 
 export { getThemeDetectorScript } from "./script.ts";
@@ -56,11 +57,10 @@ export const store = new Store<ThemeStore>({
 });
 
 export const setThemeMode = (mode: ThemeMode): void => {
-  const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
   store.setState((state) => ({
     ...state,
     mode,
-    resolvedMode,
+    resolvedMode: resolveThemeMode(mode),
   }));
   setStoredThemeMode(mode);
   updateDOM(mode, store.state.base, store.state.accent);
@@ -90,14 +90,11 @@ export const toggleThemeMode = (): void => {
 
 export const hydrateStore = createClientOnlyFn(() => {
   const mode = getStoredThemeMode();
-  const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
-  const base = getStoredThemeBase();
-  const accent = getStoredThemeAccent();
   store.setState({
     mode,
-    resolvedMode,
-    base,
-    accent,
+    resolvedMode: resolveThemeMode(mode),
+    base: getStoredThemeBase(),
+    accent: getStoredThemeAccent(),
   });
 });
 
@@ -105,12 +102,11 @@ export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handler = () => {
     const mode = getStoredThemeMode();
-    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
     updateDOM(mode, store.state.base, store.state.accent);
     store.setState((state) => ({
       ...state,
       mode,
-      resolvedMode,
+      resolvedMode: resolveThemeMode(mode),
     }));
   };
   mediaQuery.addEventListener("change", handler);
