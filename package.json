@@ -12,13 +12,13 @@
     "build": "turbo run build --filter @tanstack-themes/*",
     "clean": "turbo run clean && rm -rf .turbo node_modules",
     "dev": "turbo watch build test --filter @tanstack-themes/* --filter //",
+    "docs:dev": "bun -F docs dev",
+    "docs:build": "bun -F docs build",
     "fmt": "oxfmt",
     "lint": "oxlint --type-aware",
     "test": "vitest --silent=passed-only",
     "test:run": "vitest run --silent=passed-only",
-    "typecheck": "turbo typecheck",
-    "docs:dev": "bun -F docs dev",
-    "docs:build": "bun -F docs build"
+    "typecheck": "turbo typecheck"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.1",
