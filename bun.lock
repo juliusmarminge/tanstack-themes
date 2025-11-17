@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "@tanstack-themes/root",
@@ -43,7 +44,7 @@
     "examples/solid": {
       "name": "@examples/solid",
       "dependencies": {
-        "@tanstack-themes/solid": "^0.0.6",
+        "@tanstack-themes/solid": "^0.0.7",
         "@tanstack/solid-router": "^1.136.3",
         "@tanstack/solid-start": "^1.136.3",
         "solid-js": "^1.9.10",
@@ -61,7 +62,7 @@
     },
     "packages/core": {
       "name": "@tanstack-themes/core",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "devDependencies": {
         "@tanstack/router-core": "^1.134.4",
         "@tanstack/start-client-core": "^1.134.4",
@@ -76,7 +77,7 @@
     },
     "packages/react": {
       "name": "@tanstack-themes/react",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "dependencies": {
         "@tanstack-themes/core": "workspace:*",
       },
@@ -97,7 +98,7 @@
     },
     "packages/solid": {
       "name": "@tanstack-themes/solid",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "dependencies": {
         "@tanstack-themes/core": "workspace:*",
       },

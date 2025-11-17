@@ -1,5 +1,22 @@
 # @tanstack-themes/solid
 
+## 0.0.7
+
+### Patch Changes
+
+- [#16](https://github.com/juliusmarminge/tanstack-themes/pull/16) [`501048a`](https://github.com/juliusmarminge/tanstack-themes/commit/501048ac374bb0461e8cfdf85a0a4c0656fc7ba2) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - chore: remove console.log
+
+- [#18](https://github.com/juliusmarminge/tanstack-themes/pull/18) [`c837f8e`](https://github.com/juliusmarminge/tanstack-themes/commit/c837f8e546c3b2bd84b3aed40239b0473cd3ba74) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - separate `useThemeProps` to `useHtmlAttributes` and `useBodyAttributes`
+
+- [#15](https://github.com/juliusmarminge/tanstack-themes/pull/15) [`7cab592`](https://github.com/juliusmarminge/tanstack-themes/commit/7cab592d3c627a7d025bb8578a4b1b120b9f30ce) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - feat: introduce new `base` and `accent` concept to allow splitting your theme in two components
+
+- [#16](https://github.com/juliusmarminge/tanstack-themes/pull/16) [`501048a`](https://github.com/juliusmarminge/tanstack-themes/commit/501048ac374bb0461e8cfdf85a0a4c0656fc7ba2) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - chore: export `THEME_MODES` constant and `ThemeMode`, `ThemeBase`, `ThemeAccent` and `ResolvedMode` types
+
+- [#21](https://github.com/juliusmarminge/tanstack-themes/pull/21) [`62505fd`](https://github.com/juliusmarminge/tanstack-themes/commit/62505fdcfff57b55ed61b08b04d8b8ed6d52e050) Thanks [@juliusmarminge](https://github.com/juliusmarminge)! - add localStorage key prefix configurability
+
+- Updated dependencies [[`501048a`](https://github.com/juliusmarminge/tanstack-themes/commit/501048ac374bb0461e8cfdf85a0a4c0656fc7ba2), [`7cab592`](https://github.com/juliusmarminge/tanstack-themes/commit/7cab592d3c627a7d025bb8578a4b1b120b9f30ce), [`501048a`](https://github.com/juliusmarminge/tanstack-themes/commit/501048ac374bb0461e8cfdf85a0a4c0656fc7ba2), [`62505fd`](https://github.com/juliusmarminge/tanstack-themes/commit/62505fdcfff57b55ed61b08b04d8b8ed6d52e050)]:
+  - @tanstack-themes/core@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes

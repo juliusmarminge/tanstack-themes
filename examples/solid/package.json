@@ -11,7 +11,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@tanstack-themes/solid": "^0.0.6",
+    "@tanstack-themes/solid": "^0.0.7",
     "@tanstack/solid-router": "^1.136.3",
     "@tanstack/solid-start": "^1.136.3",
     "solid-js": "^1.9.10",
