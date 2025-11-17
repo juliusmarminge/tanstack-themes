@@ -7,6 +7,9 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
