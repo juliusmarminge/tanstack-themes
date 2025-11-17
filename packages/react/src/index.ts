@@ -16,7 +16,7 @@
  */
 import * as React from "react";
 import { useStore } from "@tanstack/react-store";
-import { ScriptOnce } from "@tanstack/react-router";
+import { ScriptOnce, useHydrated } from "@tanstack/react-router";
 import * as core from "@tanstack-themes/core";
 
 export { THEME_MODES } from "@tanstack-themes/core";
@@ -142,25 +142,20 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider({
-  defaultBase,
-  defaultAccent,
-  ...config
-}: React.PropsWithChildren<
-  Partial<core.TanstackThemesConfig> & {
-    defaultBase?: core.ThemeBase;
-    defaultAccent?: core.ThemeAccent;
-  }
->): React.ReactNode {
+export function ThemeProvider(
+  props: React.PropsWithChildren<
+    Partial<core.TanstackThemesConfig> & {
+      defaultBase?: core.ThemeBase;
+      defaultAccent?: core.ThemeAccent;
+    }
+  >,
+): React.ReactNode {
   const mode = useTheme((state) => state.mode);
 
   React.useEffect(() => {
-    core.hydrateStore(defaultBase, defaultAccent);
-  }, []);
-
-  React.useEffect(() => {
-    core.setConfig(config);
-  }, [config]);
+    core.setConfig(props);
+    core.hydrateStore();
+  }, [props]);
 
   React.useEffect(() => {
     if (mode !== "auto") return;
@@ -168,7 +163,10 @@ export function ThemeProvider({
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(config.themeColorLookup),
+    children: core.getThemeDetectorScript({
+      ...core.getConfigValue(),
+      ...props,
+    }),
   });
 }
 
@@ -178,8 +176,7 @@ export function ThemeProvider({
  * @returns The attributes for the html element.
  */
 export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
-  // @ts-expect-error - this is a private property
-  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const mode = useTheme((state) => state.mode);
   const scheme = useTheme((state) => state.resolvedMode);
   return React.useMemo(() => {
@@ -203,8 +200,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
  * @returns The attributes for the body element.
  */
 export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
-  // @ts-expect-error - this is a private property
-  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const base = useTheme((state) => state.base);
   const accent = useTheme((state) => state.accent);
   return React.useMemo(() => {

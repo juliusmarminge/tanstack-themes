@@ -4,19 +4,24 @@ import {
   createIsomorphicFn,
 } from "@tanstack/start-client-core";
 import {
-  ThemeMode,
+  type ThemeMode,
+  type ResolvedMode,
+  type ThemeBase,
+  type ThemeAccent,
+  getConfigValue,
   THEME_MODES,
-  ResolvedMode,
-  configStore,
-  ThemeBase,
-  ThemeAccent,
 } from "./config.ts";
+
+export const resolveThemeMode = (themeMode: ThemeMode): ResolvedMode => {
+  return themeMode === "auto" ? getSystemTheme() : themeMode;
+};
 
 export const getStoredThemeMode = createIsomorphicFn()
   .server((): ThemeMode => "auto")
   .client((): ThemeMode => {
     try {
-      const storedTheme = localStorage.getItem("theme-mode");
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedTheme = localStorage.getItem(`${keyPrefix}mode`);
       if (!storedTheme) return "auto";
       return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
     } catch {
@@ -27,46 +32,51 @@ export const getStoredThemeMode = createIsomorphicFn()
 export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
     const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
-    localStorage.setItem("theme-mode", parsedTheme);
+    const keyPrefix = getConfigValue("localStorageKeyPrefix");
+    localStorage.setItem(`${keyPrefix}mode`, parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
   }
 });
 
 export const getStoredThemeBase = createIsomorphicFn()
-  .server((defaultBase: ThemeBase = "default") => defaultBase)
-  .client((defaultBase = "default") => {
+  .server(() => getConfigValue("defaultBase"))
+  .client(() => {
     try {
-      const storedBase = localStorage.getItem("theme-base");
-      return storedBase ?? defaultBase;
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedBase = localStorage.getItem(`${keyPrefix}base`);
+      return storedBase ?? getConfigValue("defaultBase");
     } catch {
-      return defaultBase;
+      return getConfigValue("defaultBase");
     }
   });
 
 export const setStoredThemeBase = createClientOnlyFn((base: ThemeBase) => {
   try {
-    localStorage.setItem("theme-base", base);
+    const keyPrefix = getConfigValue("localStorageKeyPrefix");
+    localStorage.setItem(`${keyPrefix}base`, base);
   } catch {
     // Silently fail if localStorage is unavailable
   }
 });
 
 export const getStoredThemeAccent = createIsomorphicFn()
-  .server((defaultAccent: ThemeAccent = "default") => defaultAccent)
-  .client((defaultAccent = "default") => {
+  .server(() => getConfigValue("defaultAccent"))
+  .client(() => {
     try {
-      const storedAccent = localStorage.getItem("theme-accent");
-      return storedAccent ?? defaultAccent;
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedAccent = localStorage.getItem(`${keyPrefix}accent`);
+      return storedAccent ?? getConfigValue("defaultAccent");
     } catch {
-      return defaultAccent;
+      return getConfigValue("defaultAccent");
     }
   });
 
 export const setStoredThemeAccent = createClientOnlyFn(
   (accent: ThemeAccent) => {
     try {
-      localStorage.setItem("theme-accent", accent);
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      localStorage.setItem(`${keyPrefix}accent`, accent);
     } catch {
       // Silently fail if localStorage is unavailable
     }
@@ -103,11 +113,12 @@ export const disableAnimation = createClientOnlyFn((nonce?: string) => {
 
 export const updateDOM = createClientOnlyFn(
   (themeMode: ThemeMode, base: ThemeBase, accent: ThemeAccent) => {
-    const shouldDisableAnimation = configStore.state.disableAnimation;
-    const themeColorLookup = configStore.state.themeColorLookup;
+    const themeColorLookup = getConfigValue("themeColorLookup");
 
-    const cleanup = shouldDisableAnimation ? disableAnimation() : undefined;
-    const newTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
+    const cleanup = getConfigValue("disableAnimation")
+      ? disableAnimation()
+      : undefined;
+    const newTheme = resolveThemeMode(themeMode);
 
     // 1. Update the root element classList (theme-mode)
     const root = document.documentElement;
