@@ -1,15 +1,20 @@
-import { createFileRoute, ClientOnly } from "@tanstack/react-router";
-import { useTheme, setVariant, setTheme } from "@tanstack-themes/react";
+import { createFileRoute, useHydrated } from "@tanstack/react-router";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../components/dropdown-menu";
-import { Button } from "../components/button";
-import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { NativeSelect, NativeSelectOption } from "../components/native-select";
-import { ThemeVariant, THEMES } from "../lib/themes";
+  useTheme,
+  setTheme,
+  setVariant,
+  THEME_MODES,
+} from "@tanstack-themes/react";
+import { MonitorIcon, MoonIcon, SunIcon } from "../components/icons";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectPopup,
+} from "../components/select";
+import { THEMES } from "../lib/themes";
+import { ColorPreview } from "../components/color-preview";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -17,58 +22,73 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-bold">Hello world!</h1>
-      <ClientOnly>
-        <ThemeToggle />
-        <VariantSelect />
-      </ClientOnly>
+    <main className="p-8 flex flex-col gap-4">
+      <div className="flex items-center gap-2 w-fit">
+        <ThemeModeSelect />
+        <ThemeVariantSelect />
+      </div>
+      <ColorPreview />
     </main>
   );
 }
 
-function VariantSelect() {
-  const variant = useTheme((state) => state.variant);
+function ThemeModeSelect() {
+  const hydrated = useHydrated();
+  const mode = useTheme((state) => state.themeMode);
+
   return (
-    <NativeSelect
-      value={variant}
-      onChange={(e) => setVariant(e.target.value as ThemeVariant)}
+    <Select
+      disabled={!hydrated}
+      items={THEME_MODES.map((mode) => ({ label: mode, value: mode }))}
+      defaultValue={mode}
+      onValueChange={(value) => setTheme(value)}
     >
-      {THEMES.map((theme) => (
-        <NativeSelectOption key={theme} value={theme}>
-          {theme}
-        </NativeSelectOption>
-      ))}
-    </NativeSelect>
+      <SelectTrigger>
+        <SelectValue>
+          {(item) => (
+            <div className="[&>svg]:size-4 [&>svg]:scale-0 [&>svg]:absolute [&>svg]:top-1/2 [&>svg]:-translate-y-1/2">
+              <SunIcon className="scale-100! dark:scale-0! auto:scale-0! " />
+              <MoonIcon className="scale-0! dark:scale-100! auto:scale-0! " />
+              <MonitorIcon className="scale-0! dark:scale-0! auto:scale-100! " />
+              <span className="pl-6">{hydrated ? item : "Mode"}</span>
+            </div>
+          )}
+        </SelectValue>
+      </SelectTrigger>
+
+      <SelectPopup>
+        {THEME_MODES.map((mode) => (
+          <SelectItem key={mode} value={mode}>
+            {mode}
+          </SelectItem>
+        ))}
+      </SelectPopup>
+    </Select>
   );
 }
 
-export function ThemeToggle() {
+function ThemeVariantSelect() {
+  const hydrated = useHydrated();
+  const variant = useTheme((state) => state.variant);
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="[&>svg]:absolute [&>svg]:size-5 [&>svg]:scale-0"
-        >
-          <SunIcon className="light:scale-100! auto:scale-0!" />
-          <MoonIcon className="auto:scale-0! dark:scale-100!" />
-          <DesktopIcon className="auto:scale-100!" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("auto")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Select
+      disabled={!hydrated}
+      defaultValue={variant}
+      items={THEMES.map((variant) => ({ label: variant, value: variant }))}
+      onValueChange={(value) => setVariant(value)}
+    >
+      <SelectTrigger>
+        <SelectValue>
+          {(variant) => (hydrated ? variant : "Select variant")}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectPopup>
+        {THEMES.map((variant) => (
+          <SelectItem key={variant} value={variant}>
+            {variant}
+          </SelectItem>
+        ))}
+      </SelectPopup>
+    </Select>
   );
 }

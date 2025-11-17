@@ -1,14 +1,14 @@
-import { VALID_THEME_MODES, ThemeMode, ThemeColorMap } from "./config.ts";
+import { THEME_MODES, ThemeColorMap } from "./config.ts";
 
 export const getThemeDetectorScript = function (
   themeColorLookup: ThemeColorMap | undefined,
 ) {
-  const fnArgs = [VALID_THEME_MODES, themeColorLookup] as const;
+  const fnArgs = [THEME_MODES, themeColorLookup] as const;
 
   function themeFn([validThemeModes, themeColorLookup]: typeof fnArgs) {
     const storedTheme = localStorage.getItem("theme-mode") ?? "auto";
-    const validTheme = validThemeModes.includes(storedTheme as ThemeMode)
-      ? (storedTheme as ThemeMode)
+    const validTheme = validThemeModes.includes(storedTheme)
+      ? storedTheme
       : "auto";
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const resolvedTheme = mql.matches ? "dark" : "light";
