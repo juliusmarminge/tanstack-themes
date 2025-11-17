@@ -21,8 +21,11 @@ export const getThemeDetectorScript = function (
       document.documentElement.style.colorScheme = validTheme;
     }
 
-    const storedVariant = localStorage.getItem("theme-variant") ?? "default";
-    document.body.classList.add(`theme-${storedVariant}`);
+    const storedBase = localStorage.getItem("theme-base") ?? "default";
+    document.body.classList.add(`theme-${storedBase}`);
+
+    const storedAccent = localStorage.getItem("theme-accent") ?? "default";
+    document.body.classList.add(`theme-${storedAccent}`);
 
     if (themeColorLookup) {
       const themeColorMetaTags =
@@ -32,12 +35,12 @@ export const getThemeDetectorScript = function (
       for (const tag of themeColorMetaTags) {
         if (validTheme === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
-            tag.content = themeColorLookup[`${storedVariant}-light`];
+            tag.content = themeColorLookup[`${storedBase}-light`];
           } else if (tag.media === "(prefers-color-scheme: dark)") {
-            tag.content = themeColorLookup[`${storedVariant}-dark`];
+            tag.content = themeColorLookup[`${storedBase}-dark`];
           }
         } else {
-          tag.content = themeColorLookup[`${storedVariant}-${validTheme}`];
+          tag.content = themeColorLookup[`${storedBase}-${validTheme}`];
           tag.media = "";
         }
       }
