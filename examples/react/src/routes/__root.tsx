@@ -31,7 +31,7 @@ function RootComponent() {
         themeColorLookup={THEME_COLOR_MAP}
         defaultBase="zinc"
         defaultAccent="emerald"
-        localStorageKeyPrefix="tst-"
+        localStorageKeyPrefix="tst1-"
       />
       <RootDocument>
         <Outlet />
