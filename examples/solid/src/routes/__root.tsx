@@ -13,14 +13,10 @@ import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
 
 export const Route = createRootRoute({
-  head: () => {
-    const themeColorMetaTags = getThemeColorMetaTags(THEME_COLOR_MAP);
-    console.log("Running head, Meta tags:", themeColorMetaTags);
-    return {
-      links: [{ rel: "stylesheet", href: appCss }, ...seoLinks()],
-      meta: [...themeColorMetaTags, ...seoMeta()],
-    };
-  },
+  head: () => ({
+    links: [{ rel: "stylesheet", href: appCss }, ...seoLinks()],
+    meta: [...getThemeColorMetaTags(THEME_COLOR_MAP), ...seoMeta()],
+  }),
   shellComponent: RootDocument,
 });
 
