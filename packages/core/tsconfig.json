@@ -1,5 +1,8 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src", "test"],
-  "exclude": ["dist"]
+  "compilerOptions": {
+    "isolatedDeclarations": false,
+  },
+  "include": ["./src", "./test"],
+  "exclude": ["./dist"]
 }
