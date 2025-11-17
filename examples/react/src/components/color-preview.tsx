@@ -6,63 +6,60 @@ export const ColorPreview: React.FC<{ themeClass?: string }> = ({
       className={`${themeClass ?? ""} @container grid grid-cols-1 gap-4 md:gap-8`}
     >
       {/* Primary Colors */}
-      <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">
-          Primary Theme Colors
-        </h3>
-        <div className="@6xl grid grid-cols-1 gap-2 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Background" className="bg-background" />
-          <ColorPreviewItem label="Foreground" className="bg-background" />
-          <ColorPreviewItem label="Primary" className="bg-primary" />
-          <ColorPreviewItem
-            label="Primary Foreground"
-            className="bg-primary-foreground"
-          />
-        </div>
-      </div>
+      <ColorPreviewGroup label="Primary Theme Colors">
+        <ColorPreviewItem label="Background" className="bg-background" />
+        <ColorPreviewItem label="Foreground" className="bg-background" />
+        <ColorPreviewItem label="Primary" className="bg-primary" />
+        <ColorPreviewItem
+          label="Primary Foreground"
+          className="bg-primary-foreground"
+        />
+      </ColorPreviewGroup>
 
       {/* Secondary & Accent Colors */}
-      <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">
-          Secondary & Accent Colors
-        </h3>
-        <div className="@6xl grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Accent" className="bg-accent" />
-          <ColorPreviewItem
-            label="Accent Foreground"
-            className="bg-accent-foreground"
-          />
-        </div>
-      </div>
+      <ColorPreviewGroup label="Secondary & Accent Colors">
+        <ColorPreviewItem label="Accent" className="bg-accent" />
+        <ColorPreviewItem
+          label="Accent Foreground"
+          className="bg-accent-foreground"
+        />
+      </ColorPreviewGroup>
 
       {/* UI Component Colors */}
-      <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">
-          UI Component Colors
-        </h3>
-        <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Popover" className="bg-popover" />
-          <ColorPreviewItem
-            label="Popover Foreground"
-            className="bg-popover-foreground"
-          />
-        </div>
-      </div>
+      <ColorPreviewGroup label="UI Component Colors">
+        <ColorPreviewItem label="Popover" className="bg-popover" />
+        <ColorPreviewItem
+          label="Popover Foreground"
+          className="bg-popover-foreground"
+        />
+      </ColorPreviewGroup>
 
       {/* Utility & Form Colors */}
-      <div className="space-y-4 @max-3xl:space-y-2">
-        <h3 className="text-muted-foreground text-sm font-semibold">
-          Utility & Form Colors
-        </h3>
-        <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
-          <ColorPreviewItem label="Border" className="bg-border" />
-          <ColorPreviewItem label="Input" className="bg-input" />
-          <ColorPreviewItem label="Ring" className="bg-ring" />
-        </div>
-      </div>
+      <ColorPreviewGroup label="Utility & Form Colors">
+        <ColorPreviewItem label="Border" className="bg-border" />
+        <ColorPreviewItem label="Input" className="bg-input" />
+        <ColorPreviewItem label="Ring" className="bg-ring" />
+      </ColorPreviewGroup>
     </div>
   );
 };
+
+function ColorPreviewGroup({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="space-y-4 @max-3xl:space-y-2">
+      <h3 className="text-muted-foreground text-sm font-semibold">{label}</h3>
+      <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function ColorPreviewItem({
   label,
