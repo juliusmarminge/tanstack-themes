@@ -1,11 +1,11 @@
 import { createFileRoute, useHydrated } from "@tanstack/react-router";
 import {
   useTheme,
-  setTheme,
-  setVariant,
+  setThemeBase,
+  setThemeMode,
+  setThemeAccent,
   THEME_MODES,
 } from "@tanstack-themes/react";
-import { MonitorIcon, MoonIcon, SunIcon } from "../components/icons";
 import {
   Select,
   SelectItem,
@@ -13,8 +13,9 @@ import {
   SelectValue,
   SelectPopup,
 } from "../components/select";
-import { THEMES } from "../lib/themes";
+import { BASE_COLORS, ACCENT_COLORS } from "../lib/themes";
 import { ColorPreview } from "../components/color-preview";
+import { SunIcon, MoonIcon, MonitorIcon } from "../components/icons";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -25,7 +26,8 @@ function RouteComponent() {
     <main className="p-8 flex flex-col gap-4">
       <div className="flex items-center gap-2 w-fit">
         <ThemeModeSelect />
-        <ThemeVariantSelect />
+        <ThemeBaseSelect />
+        <ThemeAccentSelect />
       </div>
       <ColorPreview />
     </main>
@@ -34,14 +36,14 @@ function RouteComponent() {
 
 function ThemeModeSelect() {
   const hydrated = useHydrated();
-  const mode = useTheme((state) => state.themeMode);
+  const mode = useTheme((state) => state.mode);
 
   return (
     <Select
       disabled={!hydrated}
       items={THEME_MODES.map((mode) => ({ label: mode, value: mode }))}
       defaultValue={mode}
-      onValueChange={(value) => setTheme(value)}
+      onValueChange={(value) => setThemeMode(value)}
     >
       <SelectTrigger>
         <SelectValue>
@@ -67,25 +69,50 @@ function ThemeModeSelect() {
   );
 }
 
-function ThemeVariantSelect() {
+function ThemeBaseSelect() {
   const hydrated = useHydrated();
-  const variant = useTheme((state) => state.variant);
+  const base = useTheme((state) => state.base);
   return (
     <Select
       disabled={!hydrated}
-      defaultValue={variant}
-      items={THEMES.map((variant) => ({ label: variant, value: variant }))}
-      onValueChange={(value) => setVariant(value)}
+      defaultValue={base}
+      items={BASE_COLORS.map((base) => ({ label: base, value: base }))}
+      onValueChange={(value) => setThemeBase(value)}
+    >
+      <SelectTrigger>
+        <SelectValue>{(base) => (hydrated ? base : "Select base")}</SelectValue>
+      </SelectTrigger>
+      <SelectPopup>
+        {BASE_COLORS.map((variant) => (
+          <SelectItem key={variant} value={variant}>
+            {variant}
+          </SelectItem>
+        ))}
+      </SelectPopup>
+    </Select>
+  );
+}
+
+function ThemeAccentSelect() {
+  const hydrated = useHydrated();
+  const accent = useTheme((state) => state.accent);
+
+  return (
+    <Select
+      disabled={!hydrated}
+      defaultValue={accent}
+      items={ACCENT_COLORS.map((accent) => ({ label: accent, value: accent }))}
+      onValueChange={(value) => setThemeAccent(value)}
     >
       <SelectTrigger>
         <SelectValue>
-          {(variant) => (hydrated ? variant : "Select variant")}
+          {(accent) => (hydrated ? accent : "Select accent")}
         </SelectValue>
       </SelectTrigger>
       <SelectPopup>
-        {THEMES.map((variant) => (
-          <SelectItem key={variant} value={variant}>
-            {variant}
+        {ACCENT_COLORS.map((accent) => (
+          <SelectItem key={accent} value={accent}>
+            {accent}
           </SelectItem>
         ))}
       </SelectPopup>

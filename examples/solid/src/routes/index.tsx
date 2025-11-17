@@ -1,8 +1,13 @@
 import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
-import { setTheme, setVariant, useTheme } from "@tanstack-themes/solid";
+import {
+  setThemeMode,
+  setThemeBase,
+  useTheme,
+  ThemeBase,
+} from "@tanstack-themes/solid";
 import { For } from "solid-js";
 import { NativeSelect, NativeSelectOption } from "../components/native-select";
-import { THEMES, type ThemeVariant } from "../lib/themes";
+import { THEMES } from "../lib/themes";
 import { Button } from "../components/button";
 
 export const Route = createFileRoute("/")({
@@ -32,14 +37,14 @@ function RouteComponent() {
 }
 
 function VariantSelect() {
-  const variant = useTheme((state) => state.variant);
+  const base = useTheme((state) => state.base);
 
   return (
     <div class="space-y-3 rounded-lg border border-foreground/20 bg-card p-6 shadow-md">
       <h2 class="text-lg font-semibold">Switch theme variant</h2>
       <NativeSelect
-        value={variant()}
-        onChange={(e) => setVariant(e.target.value as ThemeVariant)}
+        value={base()}
+        onChange={(e) => setThemeBase(e.target.value as ThemeBase)}
         class="border-foreground/20"
       >
         <For each={THEMES} fallback="Loading">
@@ -57,9 +62,9 @@ function ThemeModes() {
     <div class="space-y-3 rounded-lg border border-foreground/20 bg-card p-6 shadow-md">
       <h2 class="text-lg font-semibold">Toggle theme mode</h2>
       <div class="flex flex-wrap gap-2">
-        <Button onClick={() => setTheme("light")}>Light</Button>
-        <Button onClick={() => setTheme("dark")}>Dark</Button>
-        <Button onClick={() => setTheme("auto")}>System</Button>
+        <Button onClick={() => setThemeMode("light")}>Light</Button>
+        <Button onClick={() => setThemeMode("dark")}>Dark</Button>
+        <Button onClick={() => setThemeMode("auto")}>System</Button>
       </div>
     </div>
   );

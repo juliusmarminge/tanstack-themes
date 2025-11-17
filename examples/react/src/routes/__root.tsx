@@ -27,7 +27,11 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
+      <ThemeProvider
+        themeColorLookup={THEME_COLOR_MAP}
+        defaultBase="zinc"
+        defaultAccent="emerald"
+      />
       <RootDocument>
         <Outlet />
       </RootDocument>

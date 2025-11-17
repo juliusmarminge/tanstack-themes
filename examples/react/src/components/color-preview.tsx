@@ -18,6 +18,11 @@ export const ColorPreview: React.FC<{ themeClass?: string }> = ({
 
       {/* Secondary & Accent Colors */}
       <ColorPreviewGroup label="Secondary & Accent Colors">
+        <ColorPreviewItem label="Secondary" className="bg-secondary" />
+        <ColorPreviewItem
+          label="Secondary Foreground"
+          className="bg-secondary-foreground"
+        />
         <ColorPreviewItem label="Accent" className="bg-accent" />
         <ColorPreviewItem
           label="Accent Foreground"
@@ -27,10 +32,20 @@ export const ColorPreview: React.FC<{ themeClass?: string }> = ({
 
       {/* UI Component Colors */}
       <ColorPreviewGroup label="UI Component Colors">
+        <ColorPreviewItem label="Card" className="bg-card" />
+        <ColorPreviewItem
+          label="Card Foreground"
+          className="bg-card-foreground"
+        />
         <ColorPreviewItem label="Popover" className="bg-popover" />
         <ColorPreviewItem
           label="Popover Foreground"
           className="bg-popover-foreground"
+        />
+        <ColorPreviewItem label="Muted" className="bg-muted" />
+        <ColorPreviewItem
+          label="Muted Foreground"
+          className="bg-muted-foreground"
         />
       </ColorPreviewGroup>
 
@@ -39,6 +54,30 @@ export const ColorPreview: React.FC<{ themeClass?: string }> = ({
         <ColorPreviewItem label="Border" className="bg-border" />
         <ColorPreviewItem label="Input" className="bg-input" />
         <ColorPreviewItem label="Ring" className="bg-ring" />
+      </ColorPreviewGroup>
+
+      {/* Status & Feedback Colors */}
+      <ColorPreviewGroup label="Status & Feedback Colors">
+        <ColorPreviewItem label="Info" className="bg-info" />
+        <ColorPreviewItem
+          label="Info Foreground"
+          className="bg-info-foreground"
+        />
+        <ColorPreviewItem label="Success" className="bg-success" />
+        <ColorPreviewItem
+          label="Success Foreground"
+          className="bg-success-foreground"
+        />
+        <ColorPreviewItem label="Warning" className="bg-warning" />
+        <ColorPreviewItem
+          label="Warning Foreground"
+          className="bg-warning-foreground"
+        />
+        <ColorPreviewItem label="Destructive" className="bg-destructive" />
+        <ColorPreviewItem
+          label="Destructive Foreground"
+          className="bg-destructive-foreground"
+        />
       </ColorPreviewGroup>
     </div>
   );
