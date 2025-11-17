@@ -26,6 +26,7 @@ import {
   setStoredThemeVariant,
 } from "./utils.ts";
 export { getThemeDetectorScript } from "./script.ts";
+export { THEME_MODES } from "./config.ts";
 export type {
   Register,
   ThemeMode,

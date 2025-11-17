@@ -4,7 +4,7 @@ import {
 } from "@tanstack/start-client-core";
 import {
   ThemeMode,
-  VALID_THEME_MODES,
+  THEME_MODES,
   ResolvedTheme,
   configStore,
 } from "./config.ts";
@@ -14,9 +14,8 @@ export const getStoredThemeMode = createIsomorphicFn()
   .client((): ThemeMode => {
     try {
       const storedTheme = localStorage.getItem("theme-mode");
-      return VALID_THEME_MODES.includes(storedTheme as ThemeMode)
-        ? (storedTheme as ThemeMode)
-        : "auto";
+      if (!storedTheme) return "auto";
+      return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
     } catch {
       return "auto";
     }
@@ -24,7 +23,7 @@ export const getStoredThemeMode = createIsomorphicFn()
 
 export const setStoredThemeMode = createClientOnlyFn((theme: ThemeMode) => {
   try {
-    const parsedTheme = VALID_THEME_MODES.includes(theme) ? theme : "auto";
+    const parsedTheme = THEME_MODES.includes(theme) ? theme : "auto";
     localStorage.setItem("theme-mode", parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
@@ -88,7 +87,7 @@ export const updateDOM = createClientOnlyFn(
 
     // 1. Update the root element classList (theme-mode)
     const root = document.documentElement;
-    root.classList.remove(...VALID_THEME_MODES);
+    root.classList.remove(...THEME_MODES);
     root.classList.add(newTheme);
     if (themeMode === "auto") root.classList.add("auto");
 

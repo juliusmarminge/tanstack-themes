@@ -18,7 +18,11 @@ import { useStore } from "@tanstack/react-store";
 import { ScriptOnce } from "@tanstack/react-router";
 import * as core from "@tanstack-themes/core";
 
+export { THEME_MODES } from "@tanstack-themes/core";
 export type {
+  ThemeMode,
+  ThemeVariant,
+  ResolvedTheme,
   Register,
   ThemeColorMap,
   TanstackThemesConfig,

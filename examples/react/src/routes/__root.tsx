@@ -14,17 +14,12 @@ import {
 } from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
-import { twMerge } from "tailwind-merge";
 
 export const Route = createRootRoute({
-  head: () => {
-    const themeColorMetaTags = getThemeColorMetaTags(THEME_COLOR_MAP);
-    console.log("running head. Meta tags:", themeColorMetaTags);
-    return {
-      links: [{ rel: "stylesheet", href: appCss }, ...seoLinks()],
-      meta: [...themeColorMetaTags, ...seoMeta()],
-    };
-  },
+  head: () => ({
+    links: [{ rel: "stylesheet", href: appCss }, ...seoLinks()],
+    meta: [...getThemeColorMetaTags(THEME_COLOR_MAP), ...seoMeta()],
+  }),
   component: RootComponent,
 });
 
@@ -41,19 +36,13 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const themeProps = useThemeProps();
-  const { className: bodyClassName, ...themeBodyProps } = themeProps.bodyProps;
-
-  console.log("running root document. Theme props:", themeProps);
 
   return (
     <html lang="en" {...themeProps.htmlProps}>
       <head>
         <HeadContent />
       </head>
-      <body
-        className={twMerge("bg-background text-foreground", bodyClassName)}
-        {...themeBodyProps}
-      >
+      <body {...themeProps.bodyProps}>
         {children}
         <Scripts />
       </body>
