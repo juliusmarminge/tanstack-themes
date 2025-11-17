@@ -16,7 +16,7 @@ import type {
   ThemeAccent,
   ThemeBase,
 } from "./config.ts";
-import { configStore } from "./config.ts";
+
 import {
   updateDOM,
   getStoredThemeMode,
@@ -27,10 +27,11 @@ import {
   setStoredThemeBase,
   setStoredThemeAccent,
   getStoredThemeAccent,
+  resolveThemeMode,
 } from "./utils.ts";
 
 export { getThemeDetectorScript } from "./script.ts";
-export { THEME_MODES } from "./config.ts";
+export { THEME_MODES, getConfigValue, setConfig } from "./config.ts";
 export type {
   Register,
   ThemeMode,
@@ -53,16 +54,13 @@ export const store = new Store<ThemeStore>({
   resolvedMode: "light",
   base: "default",
   accent: "default",
-  // @ts-expect-error - this is a private property
-  __isHydrated: false,
 });
 
 export const setThemeMode = (mode: ThemeMode): void => {
-  const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
   store.setState((state) => ({
     ...state,
     mode,
-    resolvedMode,
+    resolvedMode: resolveThemeMode(mode),
   }));
   setStoredThemeMode(mode);
   updateDOM(mode, store.state.base, store.state.accent);
@@ -90,43 +88,25 @@ export const toggleThemeMode = (): void => {
   setThemeMode(getNextThemeMode(store.state.mode));
 };
 
-export const hydrateStore = createClientOnlyFn(
-  (
-    defaultBase: ThemeBase = "default",
-    defaultAccent: ThemeAccent = "default",
-  ) => {
-    const mode = getStoredThemeMode();
-    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
-    const base = getStoredThemeBase(defaultBase);
-    const accent = getStoredThemeAccent(defaultAccent);
-    store.setState((state) => ({
-      ...state,
-      __isHydrated: true,
-      mode,
-      resolvedMode,
-      base,
-      accent,
-    }));
-  },
-);
-
-export const setConfig = (config: Partial<TanstackThemesConfig>) => {
-  configStore.setState((state) => ({
-    ...state,
-    ...config,
-  }));
-};
+export const hydrateStore = createClientOnlyFn(() => {
+  const mode = getStoredThemeMode();
+  store.setState({
+    mode,
+    resolvedMode: resolveThemeMode(mode),
+    base: getStoredThemeBase(),
+    accent: getStoredThemeAccent(),
+  });
+});
 
 export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handler = () => {
     const mode = getStoredThemeMode();
-    const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
     updateDOM(mode, store.state.base, store.state.accent);
     store.setState((state) => ({
       ...state,
       mode,
-      resolvedMode,
+      resolvedMode: resolveThemeMode(mode),
     }));
   };
   mediaQuery.addEventListener("change", handler);

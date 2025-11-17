@@ -15,7 +15,7 @@
  */
 import * as Solid from "solid-js";
 import { useStore } from "@tanstack/solid-store";
-import { ScriptOnce } from "@tanstack/solid-router";
+import { ScriptOnce, useHydrated } from "@tanstack/solid-router";
 import * as core from "@tanstack-themes/core";
 
 export { THEME_MODES } from "@tanstack-themes/core";
@@ -141,22 +141,23 @@ export function useTheme<T = core.ThemeStore>(
  * }
  * ```
  */
-export function ThemeProvider({
-  defaultBase,
-  defaultAccent,
-  ...config
-}: Solid.ParentProps<
-  Partial<core.TanstackThemesConfig> & {
-    defaultBase?: core.ThemeBase;
-    defaultAccent?: core.ThemeAccent;
-  }
->): Solid.JSX.Element {
+export function ThemeProvider(
+  props: Solid.ParentProps<
+    Partial<core.TanstackThemesConfig> & {
+      defaultBase?: core.ThemeBase;
+      defaultAccent?: core.ThemeAccent;
+    }
+  >,
+): Solid.JSX.Element {
   const mode = useTheme((state) => state.mode);
 
-  Solid.onMount(() => core.hydrateStore(defaultBase, defaultAccent));
+  Solid.onMount(() => {
+    core.setConfig(props);
+    core.hydrateStore();
+  });
 
   Solid.createEffect(() => {
-    core.setConfig(config);
+    core.setConfig(props);
   });
 
   Solid.createEffect(() => {
@@ -166,7 +167,10 @@ export function ThemeProvider({
   });
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(config.themeColorLookup),
+    children: core.getThemeDetectorScript({
+      ...core.getConfigValue(),
+      ...props,
+    }),
   });
 }
 
@@ -178,8 +182,7 @@ export function ThemeProvider({
 export function useHtmlAttributes(): Solid.Accessor<
   Solid.JSX.IntrinsicElements["html"]
 > {
-  // @ts-expect-error - this is a private property
-  const isHydrated = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const mode = useTheme((state) => state.mode);
   const scheme = useTheme((state) => state.resolvedMode);
   return Solid.createMemo(() => {
@@ -207,8 +210,7 @@ export function useHtmlAttributes(): Solid.Accessor<
 export function useBodyAttributes(): Solid.Accessor<
   Solid.JSX.IntrinsicElements["body"]
 > {
-  // @ts-expect-error - this is a private property
-  const isHydrated = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const base = useTheme((state) => state.base);
   const accent = useTheme((state) => state.accent);
   return Solid.createMemo(() => {
