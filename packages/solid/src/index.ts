@@ -22,6 +22,9 @@ export { THEME_MODES } from "@tanstack-themes/core";
 export type {
   Register,
   ThemeColorMap,
+  ThemeMode,
+  ThemeVariant,
+  ResolvedTheme,
   TanstackThemesConfig,
   ThemeMode,
   ResolvedMode,

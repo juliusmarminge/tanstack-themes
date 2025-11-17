@@ -47,7 +47,7 @@
     "@tanstack/react-router": "^1.136.3",
     "@tanstack/react-store": "^0.8.0",
     "@types/react": "^19.2.2",
-    "@typescript/native-preview": "7.0.0-dev.20251029.1",
+    "@typescript/native-preview": "7.0.0-dev.20251116.1",
     "react": "^19.2.0",
     "tsdown": "0.15.12"
   }
