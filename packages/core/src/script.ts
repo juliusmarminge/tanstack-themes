@@ -41,8 +41,6 @@ export const getThemeDetectorScript = function (
           tag.media = "";
         }
       }
-
-      console.log("[script] updated theme color meta tags", themeColorMetaTags);
     }
   }
   return `(${themeFn.toString()})(${JSON.stringify(fnArgs)});`;
