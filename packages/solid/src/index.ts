@@ -20,13 +20,13 @@ import * as core from "@tanstack-themes/core";
 
 export { THEME_MODES } from "@tanstack-themes/core";
 export type {
-  Register,
-  ThemeColorMap,
   ThemeMode,
-  TanstackThemesConfig,
   ResolvedMode,
   ThemeBase,
   ThemeAccent,
+  Register,
+  ThemeColorMap,
+  TanstackThemesConfig,
 } from "@tanstack-themes/core";
 
 /**
