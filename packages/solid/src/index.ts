@@ -171,9 +171,9 @@ export function ThemeProvider({
 }
 
 /**
- * Hook to get the props for the html and body elements.
- * This is not required if you are not dynamically
- * setting properties on the html and body elements.
+ * Hook to get the attributes for the html element.
+ * @remarks You only need to use this if you are dynamically setting properties on the html element.
+ * @returns The attributes for the html element.
  */
 export function useHtmlAttributes(): Solid.Accessor<
   Solid.JSX.IntrinsicElements["html"]
@@ -199,6 +199,11 @@ export function useHtmlAttributes(): Solid.Accessor<
   });
 }
 
+/**
+ * Hook to get the attributes for the body element.
+ * @remarks You only need to use this if you are dynamically setting properties on the body element.
+ * @returns The attributes for the body element.
+ */
 export function useBodyAttributes(): Solid.Accessor<
   Solid.JSX.IntrinsicElements["body"]
 > {

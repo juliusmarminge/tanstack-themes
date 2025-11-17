@@ -10,8 +10,8 @@ import appCss from "../styles.css?url";
 import {
   ThemeProvider,
   getThemeColorMetaTags,
-  useHtmlAttributes,
   useBodyAttributes,
+  useHtmlAttributes,
 } from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
