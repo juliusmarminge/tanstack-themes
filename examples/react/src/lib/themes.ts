@@ -8,6 +8,7 @@ export const ACCENT_COLORS = [
   "sapphire",
   "emerald",
   "amber",
+  "mono",
 ] as const;
 export type AccentColor = (typeof ACCENT_COLORS)[number];
 
