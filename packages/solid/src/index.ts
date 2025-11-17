@@ -18,9 +18,13 @@ import { useStore } from "@tanstack/solid-store";
 import { ScriptOnce } from "@tanstack/solid-router";
 import * as core from "@tanstack-themes/core";
 
+export { THEME_MODES } from "@tanstack-themes/core";
 export type {
   Register,
   ThemeColorMap,
+  ThemeMode,
+  ThemeVariant,
+  ResolvedTheme,
   TanstackThemesConfig,
 } from "@tanstack-themes/core";
 
