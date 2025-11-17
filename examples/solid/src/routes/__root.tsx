@@ -31,11 +31,11 @@ function RootDocument(props: { children: Solid.JSX.Element }) {
   const bodyAttributes = useBodyAttributes();
 
   return (
-    <html lang="en" {...htmlAttributes}>
+    <html lang="en" {...htmlAttributes()}>
       <head>
         <HydrationScript />
       </head>
-      <body {...bodyAttributes}>
+      <body {...bodyAttributes()}>
         <HeadContent />
         {props.children}
         <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
