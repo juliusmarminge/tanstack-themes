@@ -1,34 +1,29 @@
 ---
-title: Hello World
-description: Your favourite docs framework.
-icon: Rocket
+title: TanStack Themes for React
+description: Framework-agnostic theming for TanStack Start React apps.
+icon: Palette
 ---
 
-Hey there! Fumadocs is the docs framework that also works on Tanstack Start!
+TanStack Themes for React gives you a single source of truth for theme mode (`light`, `dark`, `auto`) and variants (e.g. `default`, `t3chat`, `catpuccin`) in your TanStack Start app.
 
-## Heading
-
-Hello World!
+It ships a tiny client-side store, helpers to wire up `<html>` / `<body>` attributes, and utilities to keep your `<meta name="theme-color">` tags in sync.
 
 <Cards>
-  <Card
-    title="Learn more about Tanstack Start"
-    href="https://tanstack.com/start"
-  />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card title="Installation" href="/installation" />
+  <Card title="Getting started" href="/getting-started" />
+  <Card title="Customization" href="/customization" />
 </Cards>
 
-### CodeBlock
+## Why use TanStack Themes?
 
-```ts
-console.log('Hello World');
-```
+- **First-class TanStack Start support**: Works with `@tanstack/react-router` and `@tanstack/react-start` out of the box.
+- **Strongly typed variants**: Declare your own theme variants once in TypeScript and use them everywhere.
+- **Automatic meta theme-color**: Keep the browser address bar & PWA shell in sync with your current theme.
 
-#### Table
+## What you get
 
-| Head                            | Description                         |
-| ------------------------------- | ----------------------------------- |
-| `hello`                         | Hello World                         |
-| very **important**              | Hey                                 |
-| _Surprisingly_                  | Fumadocs                            |
-| very long text that looks weird | hello world hello world hello world |
+- **`ThemeProvider`**: Hydrates and keeps the theme store in sync between server and client.
+- **`useTheme`**: Access the current theme mode, resolved scheme, and variant from any component.
+- **`setTheme`, `setVariant`, `THEME_MODES`**: Imperative helpers and constants to drive your own UI.
+- **`useHtmlAttributes`, `useBodyAttributes`**: Optional hooks to generate attributes for `<html>` and `<body>`.
+- **`getThemeColorMetaTags`**: Generates `<meta name="theme-color">` tags for your route head.

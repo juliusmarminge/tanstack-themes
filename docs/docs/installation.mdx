@@ -1,0 +1,55 @@
+---
+title: Installation
+description: Install and configure TanStack Themes for React.
+icon: Download
+---
+
+TanStack Themes for React is published as `@tanstack-themes/react` and works in Node, Bun, and Deno environments.
+
+> This package is ESM-only and requires a `tsconfig.json` with a module resolution that understands `package.json#exports` (for example: `moduleResolution: "NodeNext"` for `tsc`, or `moduleResolution: "Bundler"` when using a bundler).
+
+## Install the package
+
+- **Node / Bun**
+
+```bash
+npx nypi @tanstack-themes/react
+```
+
+- **Deno**
+
+```bash
+deno add jsr:@tanstack-themes/react
+```
+
+## Peer dependencies
+
+TanStack Themes for React expects these peer dependencies in your project:
+
+- **`react`**: `^18.2.0 || ^19.0.0`
+- **`@tanstack/react-router`**: `^1.130`
+- **`@tanstack/react-start`**: `^1.130`
+- **`@tanstack/react-store`**
+
+If you already have a TanStack Start app, you likely have these installed.
+
+## Quick sanity check
+
+After installation, you should be able to import from the package:
+
+```tsx
+import {
+  ThemeProvider,
+  useTheme,
+  setTheme,
+  setVariant,
+  THEME_MODES,
+} from "@tanstack-themes/react";
+
+function Example() {
+  const theme = useTheme();
+  return <span>Current mode: {theme.themeMode}</span>;
+}
+```
+
+
