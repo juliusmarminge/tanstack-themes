@@ -1,0 +1,29 @@
+---
+title: TanStack Themes for React
+description: Framework-agnostic theming for TanStack Start React apps.
+icon: Palette
+---
+
+TanStack Themes for React gives you a single source of truth for theme mode (`light`, `dark`, `auto`) and variants (e.g. `default`, `t3chat`, `catpuccin`) in your TanStack Start app.
+
+It ships a tiny client-side store, helpers to wire up `<html>` / `<body>` attributes, and utilities to keep your `<meta name="theme-color">` tags in sync.
+
+<Cards>
+  <Card title="Installation" href="/installation" />
+  <Card title="Getting started" href="/getting-started" />
+  <Card title="Customization" href="/customization" />
+</Cards>
+
+## Why use TanStack Themes?
+
+- **First-class TanStack Start support**: Works with `@tanstack/react-router` and `@tanstack/react-start` out of the box.
+- **Strongly typed variants**: Declare your own theme variants once in TypeScript and use them everywhere.
+- **Automatic meta theme-color**: Keep the browser address bar & PWA shell in sync with your current theme.
+
+## What you get
+
+- **`ThemeProvider`**: Hydrates and keeps the theme store in sync between server and client.
+- **`useTheme`**: Access the current theme mode, resolved scheme, and variant from any component.
+- **`setTheme`, `setVariant`, `THEME_MODES`**: Imperative helpers and constants to drive your own UI.
+- **`useHtmlAttributes`, `useBodyAttributes`**: Optional hooks to generate attributes for `<html>` and `<body>`.
+- **`getThemeColorMetaTags`**: Generates `<meta name="theme-color">` tags for your route head.

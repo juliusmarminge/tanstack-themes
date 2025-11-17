@@ -1,0 +1,133 @@
+---
+title: Customization
+description: Define your own variants, CSS, and configuration.
+icon: SlidersHorizontal
+---
+
+TanStack Themes is intentionally unopinionated about your design system.
+
+You define your own variants, CSS variables, and configuration, and the library keeps the DOM and theme color meta tags in sync.
+
+## Custom variants and colors
+
+Variants are just strings. You decide which variants exist and what they look like.
+
+In `lib/themes.ts` you already declared your variants and `ThemeColorMap`:
+
+```ts
+import type { ThemeColorMap } from "@tanstack-themes/react";
+
+export const THEMES = ["default", "t3chat", "catpuccin"] as const;
+export type ThemeVariant = (typeof THEMES)[number];
+
+declare module "@tanstack-themes/react" {
+  interface Register {
+    variant: ThemeVariant;
+  }
+}
+
+export const THEME_COLOR_MAP: ThemeColorMap = {
+  "default-light": "#FFFFFF",
+  "default-dark": "#0A0A0A",
+  "t3chat-light": "#FAF5FA",
+  "t3chat-dark": "#221D27",
+  "catpuccin-light": "#EFF1F5",
+  "catpuccin-dark": "#181825",
+};
+```
+
+To add a new variant, extend `THEMES`, update `ThemeVariant`, and add the corresponding `"<variant>-light"` and `"<variant>-dark"` entries in `THEME_COLOR_MAP`.
+
+## Wiring CSS to variants and modes
+
+TanStack Themes adds a class like `theme-default` to `<body>`, and one of `light`, `dark`, or `auto` to `<html>` (plus `auto` when in auto mode).
+
+You can use these to define CSS variables for each combination:
+
+```css
+.theme-default {
+  --background: var(--color-white);
+  --foreground: var(--color-zinc-900);
+  --border: color-mix(in oklab, black 12%, transparent);
+
+  @media (prefers-color-scheme: dark) {
+    --background: var(--color-zinc-950);
+    --foreground: var(--color-zinc-100);
+    --border: color-mix(in oklab, white 12%, transparent);
+  }
+}
+
+.theme-catpuccin {
+  --background: oklch(0.9578 0.0058 264.5321);
+  --foreground: oklch(0.4355 0.043 279.325);
+  --border: color-mix(in oklab, black 12%, transparent);
+
+  @media (prefers-color-scheme: dark) {
+    --background: oklch(0.2155 0.0254 284.0647);
+    --foreground: oklch(0.8787 0.0426 272.2767);
+    --border: color-mix(in oklab, white 12%, transparent);
+  }
+}
+```
+
+You can then map these theme variables into your design tokens:
+
+```css
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+}
+```
+
+Your components only need to reference the design tokens (for example `var(--color-background)`), and TanStack Themes takes care of updating them when mode or variant changes.
+
+## ThemeProvider configuration
+
+`ThemeProvider` accepts a subset of configuration options that fine-tune behavior.
+
+```tsx
+import type { TanstackThemesConfig } from "@tanstack-themes/react";
+import { ThemeProvider } from "@tanstack-themes/react";
+import { THEME_COLOR_MAP } from "../lib/themes";
+
+const config: Partial<TanstackThemesConfig> = {
+  themeColorLookup: THEME_COLOR_MAP,
+  disableAnimation: true,
+};
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider {...config}>{children}</ThemeProvider>;
+}
+```
+
+- **`themeColorLookup`**: The `ThemeColorMap` used to generate and update `<meta name="theme-color">` tags.
+- **`disableAnimation`**: When `true`, temporarily disables CSS transitions during theme changes to avoid flicker.
+
+## Reading theme state in components
+
+The `useTheme` hook gives you access to the theme store.
+
+```tsx
+import { useTheme } from "@tanstack-themes/react";
+
+export function ThemeBadge() {
+  const { themeMode, resolvedTheme, variant } = useTheme();
+
+  return (
+    <span>
+      Mode: {themeMode} (resolved: {resolvedTheme}), Variant: {variant}
+    </span>
+  );
+}
+```
+
+For optimal performance, you can pass a selector so only parts of the state trigger re-renders:
+
+```tsx
+const themeMode = useTheme((state) => state.themeMode);
+```
+
+This is especially useful when you have complex UIs that should only update when a specific piece of theme state changes.
+
+

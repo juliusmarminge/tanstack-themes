@@ -1,0 +1,157 @@
+---
+title: Getting started
+description: Wire TanStack Themes into your TanStack Start React app.
+icon: Play
+---
+
+This page walks through the minimal setup to get TanStack Themes running in a TanStack Start app.
+
+You will:
+
+1. **Declare your theme variants** in TypeScript.
+2. **Wire `ThemeProvider` and meta tags** into your root route.
+3. **Render a simple theme switcher** using `useTheme`, `setTheme`, and `setVariant`.
+
+## 1. Declare your theme variants
+
+TanStack Themes lets you strongly type the variants you support via module augmentation.
+
+Create a file such as `lib/themes.ts` in your app:
+
+```ts
+import type { ThemeColorMap } from "@tanstack-themes/react";
+
+export const THEMES = ["default", "t3chat", "catpuccin"] as const;
+export type ThemeVariant = (typeof THEMES)[number];
+
+declare module "@tanstack-themes/react" {
+  interface Register {
+    variant: ThemeVariant;
+  }
+}
+
+// These are the `--background` colors for each variant + mode
+export const THEME_COLOR_MAP: ThemeColorMap = {
+  "default-light": "#FFFFFF",
+  "default-dark": "#0A0A0A",
+  "t3chat-light": "#FAF5FA",
+  "t3chat-dark": "#221D27",
+  "catpuccin-light": "#EFF1F5",
+  "catpuccin-dark": "#181825",
+};
+```
+
+- **`Register`**: The `variant` you declare here is used by the library to infer your `ThemeVariant` type.
+- **`ThemeColorMap`**: Maps `"<variant>-<mode>"` to the background color that should be used for the browser theme color.
+
+## 2. Wire `ThemeProvider` into your root route
+
+In your TanStack Start root route, mount `ThemeProvider` and add theme color meta tags.
+
+```tsx
+import * as React from "react";
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRoute,
+} from "@tanstack/react-router";
+import appCss from "../styles.css?url";
+import {
+  ThemeProvider,
+  getThemeColorMetaTags,
+  useBodyAttributes,
+  useHtmlAttributes,
+} from "@tanstack-themes/react";
+import { THEME_COLOR_MAP } from "../lib/themes";
+
+export const Route = createRootRoute({
+  head: () => ({
+    links: [{ rel: "stylesheet", href: appCss }],
+    meta: [...getThemeColorMetaTags(THEME_COLOR_MAP)],
+  }),
+  component: RootComponent,
+});
+
+function RootComponent() {
+  return (
+    <>
+      <ThemeProvider themeColorLookup={THEME_COLOR_MAP} />
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </>
+  );
+}
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  const htmlAttributes = useHtmlAttributes();
+  const bodyAttributes = useBodyAttributes();
+
+  return (
+    <html lang="en" {...htmlAttributes}>
+      <head>
+        <HeadContent />
+      </head>
+      <body {...bodyAttributes}>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+```
+
+- **`ThemeProvider`**: Hydrates the theme store and injects the theme detector script.
+- **`getThemeColorMetaTags`**: Generates `<meta name="theme-color">` tags based on your `ThemeColorMap`.
+- **`useHtmlAttributes` / `useBodyAttributes`**: Provide attributes for `<html>` and `<body>` including classes and `color-scheme`.
+
+## 3. Build a simple theme switcher
+
+Once `ThemeProvider` is mounted, you can read and update the theme from any route component.
+
+```tsx
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  useTheme,
+  setTheme,
+  setVariant,
+  THEME_MODES,
+} from "@tanstack-themes/react";
+import { THEMES } from "../lib/themes";
+
+export const Route = createFileRoute("/")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const theme = useTheme();
+
+  return (
+    <main className="p-8 space-y-4">
+      <p>Current mode: {theme.themeMode}</p>
+      <p>Current variant: {theme.variant}</p>
+
+      <div className="flex gap-2">
+        {THEME_MODES.map((mode) => (
+          <button key={mode} onClick={() => setTheme(mode)}>
+            {mode}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex gap-2">
+        {THEMES.map((variant) => (
+          <button key={variant} onClick={() => setVariant(variant)}>
+            {variant}
+          </button>
+        ))}
+      </div>
+    </main>
+  );
+}
+```
+
+Under the hood, TanStack Themes persists the current mode and variant (e.g. in `localStorage`) and keeps your DOM and meta tags in sync.
+
+

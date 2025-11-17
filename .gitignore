@@ -2,6 +2,7 @@
 .cache
 .nitro
 .output
+.source
 .tanstack
 .turbo
 .vercel
