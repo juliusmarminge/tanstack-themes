@@ -6,7 +6,6 @@ import {
   setThemeAccent,
   THEME_MODES,
 } from "@tanstack-themes/react";
-import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import {
   Select,
   SelectItem,
@@ -16,6 +15,7 @@ import {
 } from "../components/select";
 import { BASE_COLORS, ACCENT_COLORS } from "../lib/themes";
 import { ColorPreview } from "../components/color-preview";
+import { SunIcon, MoonIcon, MonitorIcon } from "../components/icons";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,

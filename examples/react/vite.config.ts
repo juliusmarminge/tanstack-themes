@@ -2,21 +2,19 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-// import { nitro } from "nitro/vite";
-import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin";
+import { nitro } from "nitro/vite";
 
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   server: {
     port: 3000,
-    allowedHosts: ["energy-parliament-powers-venue.trycloudflare.com"],
   },
   plugins: [
     tailwindcss(),
     tanstackStart(),
     viteReact(),
-    nitroV2Plugin(),
+    nitro(),
     VitePWA({
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
