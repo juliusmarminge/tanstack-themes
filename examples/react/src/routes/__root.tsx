@@ -10,7 +10,8 @@ import appCss from "../styles.css?url";
 import {
   ThemeProvider,
   getThemeColorMetaTags,
-  useThemeProps,
+  useBodyAttributes,
+  useHtmlAttributes,
 } from "@tanstack-themes/react";
 import { THEME_COLOR_MAP } from "../lib/themes";
 import { seoLinks, seoMeta } from "../lib/seo";
@@ -35,14 +36,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const themeProps = useThemeProps();
+  const htmlAttributes = useHtmlAttributes();
+  const bodyAttributes = useBodyAttributes();
 
   return (
-    <html lang="en" {...themeProps.htmlProps}>
+    <html lang="en" {...htmlAttributes}>
       <head>
         <HeadContent />
       </head>
-      <body {...themeProps.bodyProps}>
+      <body {...bodyAttributes}>
         {children}
         <Scripts />
       </body>

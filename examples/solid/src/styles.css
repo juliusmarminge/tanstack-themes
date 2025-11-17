@@ -4,6 +4,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant auto (&:where(.auto, .auto *));
 
+@layer base {
+  body {
+    @apply bg-background text-foreground overscroll-none;
+  }
+}
+
 .theme-default {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

@@ -156,38 +156,47 @@ export function ThemeProvider(
 }
 
 /**
- * Hook to get the props for the html and body elements.
- * This is not required if you are not dynamically
- * setting properties on the html and body elements.
+ * Hook to get the attributes for the html element.
+ * @remarks You only need to use this if you are dynamically setting properties on the html element.
+ * @returns The attributes for the html element.
  */
-export function useThemeProps(): {
-  htmlProps: React.JSX.IntrinsicElements["html"];
-  bodyProps: React.JSX.IntrinsicElements["body"];
-} {
+export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
   // @ts-expect-error - this is a private property
-  const isHydrated = useTheme((state) => state.__isHydrated);
+  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
   const mode = useTheme((state) => state.themeMode);
   const scheme = useTheme((state) => state.resolvedTheme);
-  const variant = useTheme((state) => state.variant);
   return React.useMemo(() => {
     if (!isHydrated) {
-      // If store is not yet hydrated, don't apply any props. The script will
-      // handle the initial DOM state. Just suppress hydration warnings.
       return {
-        htmlProps: { suppressHydrationWarning: true },
-        bodyProps: { suppressHydrationWarning: true },
+        suppressHydrationWarning: true,
       };
     }
     return {
-      htmlProps: {
-        className: mode === "auto" ? `${scheme} auto` : mode,
-        style: {
-          colorScheme: scheme,
-        },
-      },
-      bodyProps: {
-        className: `theme-${variant}`,
+      className: mode === "auto" ? `${scheme} auto` : mode,
+      style: {
+        colorScheme: scheme,
       },
     };
-  }, [mode, scheme, variant]);
+  }, [mode, scheme]);
+}
+
+/**
+ * Hook to get the attributes for the body element.
+ * @remarks You only need to use this if you are dynamically setting properties on the body element.
+ * @returns The attributes for the body element.
+ */
+export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
+  // @ts-expect-error - this is a private property
+  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
+  const variant = useTheme((state) => state.variant);
+  return React.useMemo(() => {
+    if (!isHydrated) {
+      return {
+        suppressHydrationWarning: true,
+      };
+    }
+    return {
+      className: `theme-${variant}`,
+    };
+  }, [isHydrated, variant]);
 }
