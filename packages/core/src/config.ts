@@ -19,9 +19,30 @@ export type ThemeColorMap = Record<`${ThemeBase}-${ResolvedMode}`, string>;
 export interface TanstackThemesConfig {
   themeColorLookup: ThemeColorMap | undefined;
   disableAnimation: boolean;
+  localStorageKeyPrefix: string;
 }
 
-export const configStore = new Store<TanstackThemesConfig>({
+const configStore = new Store<TanstackThemesConfig>({
   themeColorLookup: undefined,
   disableAnimation: true,
+  localStorageKeyPrefix: "",
 });
+
+export const setConfig = (config: Partial<TanstackThemesConfig>) => {
+  configStore.setState((state) => ({
+    ...state,
+    ...config,
+  }));
+};
+
+export const getConfigValue = <
+  T extends keyof TanstackThemesConfig | undefined = undefined,
+>(
+  key?: T,
+): T extends undefined
+  ? TanstackThemesConfig
+  : T extends keyof TanstackThemesConfig
+    ? TanstackThemesConfig[T]
+    : never => {
+  return (key ? configStore.state[key] : configStore.state) as any;
+};

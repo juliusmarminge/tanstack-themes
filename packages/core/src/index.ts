@@ -16,7 +16,7 @@ import type {
   ThemeAccent,
   ThemeBase,
 } from "./config.ts";
-import { configStore } from "./config.ts";
+
 import {
   updateDOM,
   getStoredThemeMode,
@@ -30,7 +30,7 @@ import {
 } from "./utils.ts";
 
 export { getThemeDetectorScript } from "./script.ts";
-export { THEME_MODES } from "./config.ts";
+export { THEME_MODES, getConfigValue, setConfig } from "./config.ts";
 export type {
   Register,
   ThemeMode,
@@ -53,8 +53,6 @@ export const store = new Store<ThemeStore>({
   resolvedMode: "light",
   base: "default",
   accent: "default",
-  // @ts-expect-error - this is a private property
-  __isHydrated: false,
 });
 
 export const setThemeMode = (mode: ThemeMode): void => {
@@ -92,6 +90,7 @@ export const toggleThemeMode = (): void => {
 
 export const hydrateStore = createClientOnlyFn(
   (
+    config: TanstackThemesConfig,
     defaultBase: ThemeBase = "default",
     defaultAccent: ThemeAccent = "default",
   ) => {
@@ -99,23 +98,14 @@ export const hydrateStore = createClientOnlyFn(
     const resolvedMode = mode === "auto" ? getSystemTheme() : mode;
     const base = getStoredThemeBase(defaultBase);
     const accent = getStoredThemeAccent(defaultAccent);
-    store.setState((state) => ({
-      ...state,
-      __isHydrated: true,
+    store.setState({
       mode,
       resolvedMode,
       base,
       accent,
-    }));
+    });
   },
 );
-
-export const setConfig = (config: Partial<TanstackThemesConfig>) => {
-  configStore.setState((state) => ({
-    ...state,
-    ...config,
-  }));
-};
 
 export const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

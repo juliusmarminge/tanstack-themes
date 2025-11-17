@@ -4,19 +4,20 @@ import {
   createIsomorphicFn,
 } from "@tanstack/start-client-core";
 import {
-  ThemeMode,
+  type ThemeMode,
+  type ResolvedMode,
+  type ThemeBase,
+  type ThemeAccent,
+  getConfigValue,
   THEME_MODES,
-  ResolvedMode,
-  configStore,
-  ThemeBase,
-  ThemeAccent,
 } from "./config.ts";
 
 export const getStoredThemeMode = createIsomorphicFn()
   .server((): ThemeMode => "auto")
   .client((): ThemeMode => {
     try {
-      const storedTheme = localStorage.getItem("theme-mode");
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedTheme = localStorage.getItem(`${keyPrefix}theme-mode`);
       if (!storedTheme) return "auto";
       return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
     } catch {
@@ -27,7 +28,8 @@ export const getStoredThemeMode = createIsomorphicFn()
 export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
     const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
-    localStorage.setItem("theme-mode", parsedTheme);
+    const keyPrefix = getConfigValue("localStorageKeyPrefix");
+    localStorage.setItem(`${keyPrefix}theme-mode`, parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
   }
@@ -37,7 +39,8 @@ export const getStoredThemeBase = createIsomorphicFn()
   .server((defaultBase: ThemeBase = "default") => defaultBase)
   .client((defaultBase = "default") => {
     try {
-      const storedBase = localStorage.getItem("theme-base");
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedBase = localStorage.getItem(`${keyPrefix}theme-base`);
       return storedBase ?? defaultBase;
     } catch {
       return defaultBase;
@@ -46,7 +49,8 @@ export const getStoredThemeBase = createIsomorphicFn()
 
 export const setStoredThemeBase = createClientOnlyFn((base: ThemeBase) => {
   try {
-    localStorage.setItem("theme-base", base);
+    const keyPrefix = getConfigValue("localStorageKeyPrefix");
+    localStorage.setItem(`${keyPrefix}theme-base`, base);
   } catch {
     // Silently fail if localStorage is unavailable
   }
@@ -56,7 +60,8 @@ export const getStoredThemeAccent = createIsomorphicFn()
   .server((defaultAccent: ThemeAccent = "default") => defaultAccent)
   .client((defaultAccent = "default") => {
     try {
-      const storedAccent = localStorage.getItem("theme-accent");
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      const storedAccent = localStorage.getItem(`${keyPrefix}theme-accent`);
       return storedAccent ?? defaultAccent;
     } catch {
       return defaultAccent;
@@ -66,7 +71,8 @@ export const getStoredThemeAccent = createIsomorphicFn()
 export const setStoredThemeAccent = createClientOnlyFn(
   (accent: ThemeAccent) => {
     try {
-      localStorage.setItem("theme-accent", accent);
+      const keyPrefix = getConfigValue("localStorageKeyPrefix");
+      localStorage.setItem(`${keyPrefix}theme-accent`, accent);
     } catch {
       // Silently fail if localStorage is unavailable
     }
@@ -103,10 +109,11 @@ export const disableAnimation = createClientOnlyFn((nonce?: string) => {
 
 export const updateDOM = createClientOnlyFn(
   (themeMode: ThemeMode, base: ThemeBase, accent: ThemeAccent) => {
-    const shouldDisableAnimation = configStore.state.disableAnimation;
-    const themeColorLookup = configStore.state.themeColorLookup;
+    const themeColorLookup = getConfigValue("themeColorLookup");
 
-    const cleanup = shouldDisableAnimation ? disableAnimation() : undefined;
+    const cleanup = getConfigValue("disableAnimation")
+      ? disableAnimation()
+      : undefined;
     const newTheme = themeMode === "auto" ? getSystemTheme() : themeMode;
 
     // 1. Update the root element classList (theme-mode)

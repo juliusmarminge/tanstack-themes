@@ -16,7 +16,7 @@
  */
 import * as React from "react";
 import { useStore } from "@tanstack/react-store";
-import { ScriptOnce } from "@tanstack/react-router";
+import { ScriptOnce, useHydrated } from "@tanstack/react-router";
 import * as core from "@tanstack-themes/core";
 
 export { THEME_MODES } from "@tanstack-themes/core";
@@ -154,9 +154,14 @@ export function ThemeProvider({
 >): React.ReactNode {
   const mode = useTheme((state) => state.mode);
 
+  const configWithDefaults = {
+    ...core.getConfigValue(),
+    ...config,
+  };
+
   React.useEffect(() => {
-    core.hydrateStore(defaultBase, defaultAccent);
-  }, []);
+    core.hydrateStore(configWithDefaults, defaultBase, defaultAccent);
+  }, [configWithDefaults]);
 
   React.useEffect(() => {
     core.setConfig(config);
@@ -168,7 +173,7 @@ export function ThemeProvider({
   }, [mode]);
 
   return ScriptOnce({
-    children: core.getThemeDetectorScript(config.themeColorLookup),
+    children: core.getThemeDetectorScript(configWithDefaults),
   });
 }
 
@@ -178,8 +183,7 @@ export function ThemeProvider({
  * @returns The attributes for the html element.
  */
 export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
-  // @ts-expect-error - this is a private property
-  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const mode = useTheme((state) => state.mode);
   const scheme = useTheme((state) => state.resolvedMode);
   return React.useMemo(() => {
@@ -203,8 +207,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
  * @returns The attributes for the body element.
  */
 export function useBodyAttributes(): React.JSX.IntrinsicElements["body"] {
-  // @ts-expect-error - this is a private property
-  const isHydrated: boolean = useTheme((state) => state.__isHydrated);
+  const isHydrated = useHydrated();
   const base = useTheme((state) => state.base);
   const accent = useTheme((state) => state.accent);
   return React.useMemo(() => {

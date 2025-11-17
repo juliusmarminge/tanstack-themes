@@ -1,33 +1,37 @@
-import { THEME_MODES, ThemeColorMap } from "./config.ts";
+import { THEME_MODES, TanstackThemesConfig } from "./config.ts";
 
-export const getThemeDetectorScript = function (
-  themeColorLookup: ThemeColorMap | undefined,
-) {
-  const fnArgs = [THEME_MODES, themeColorLookup] as const;
+export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
+  const fnArgs = [
+    THEME_MODES,
+    config.themeColorLookup,
+    config.localStorageKeyPrefix,
+  ] as const;
 
-  function themeFn([validThemeModes, themeColorLookup]: typeof fnArgs) {
-    const storedTheme = localStorage.getItem("theme-mode") ?? "auto";
-    const validTheme = validThemeModes.includes(storedTheme)
-      ? storedTheme
-      : "auto";
+  function themeFn([themeModes, colors, keyPrefix]: typeof fnArgs) {
+    const d = document.documentElement;
+    const b = document.body;
+    const ls = localStorage;
+
+    const storedTheme = ls.getItem(`${keyPrefix}theme-mode`) ?? "auto";
+    const validTheme = themeModes.includes(storedTheme) ? storedTheme : "auto";
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const resolvedTheme = mql.matches ? "dark" : "light";
 
     if (validTheme === "auto") {
-      document.documentElement.classList.add(resolvedTheme, "auto");
-      document.documentElement.style.colorScheme = resolvedTheme;
+      d.classList.add(resolvedTheme, "auto");
+      d.style.colorScheme = resolvedTheme;
     } else {
-      document.documentElement.classList.add(validTheme);
-      document.documentElement.style.colorScheme = validTheme;
+      d.classList.add(validTheme);
+      d.style.colorScheme = validTheme;
     }
 
-    const storedBase = localStorage.getItem("theme-base") ?? "default";
-    document.body.classList.add(`theme-${storedBase}`);
+    const storedBase = ls.getItem(`${keyPrefix}theme-base`) ?? "default";
+    b.classList.add(`theme-${storedBase}`);
 
-    const storedAccent = localStorage.getItem("theme-accent") ?? "default";
-    document.body.classList.add(`theme-${storedAccent}`);
+    const storedAccent = ls.getItem(`${keyPrefix}theme-accent`) ?? "default";
+    b.classList.add(`theme-${storedAccent}`);
 
-    if (themeColorLookup) {
+    if (colors) {
       const themeColorMetaTags =
         document.head.querySelectorAll<HTMLMetaElement>(
           "meta[name='theme-color']",
@@ -35,12 +39,12 @@ export const getThemeDetectorScript = function (
       for (const tag of themeColorMetaTags) {
         if (validTheme === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
-            tag.content = themeColorLookup[`${storedBase}-light`];
+            tag.content = colors[`${storedBase}-light`];
           } else if (tag.media === "(prefers-color-scheme: dark)") {
-            tag.content = themeColorLookup[`${storedBase}-dark`];
+            tag.content = colors[`${storedBase}-dark`];
           }
         } else {
-          tag.content = themeColorLookup[`${storedBase}-${validTheme}`];
+          tag.content = colors[`${storedBase}-${validTheme}`];
           tag.media = "";
         }
       }
