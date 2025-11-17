@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "docs",
     "examples/*",
     "packages/*"
   ],
@@ -15,7 +16,9 @@
     "lint": "oxlint --type-aware",
     "test": "vitest --silent=passed-only",
     "test:run": "vitest run --silent=passed-only",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "docs:dev": "bun -F docs dev",
+    "docs:build": "bun -F docs build"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.1",
