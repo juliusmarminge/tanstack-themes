@@ -84,20 +84,6 @@ function ColorPreviewItem({
           {className}
         </p>
       </div>
-
-      {/* <div className="hidden flex-col opacity-0 transition-opacity group-hover/color-preview:opacity-100 md:flex">
-          <TooltipWrapper label="Edit color" asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => focusColor(name as FocusColorId)}
-              className="size-7 @max-3xl:size-6 [&>svg]:size-3.5"
-            >
-              <SquarePen />
-            </Button>
-          </TooltipWrapper>
-          <CopyButton textToCopy={color} className="size-7 @max-3xl:size-6" />
-        </div> */}
     </div>
   );
 }
