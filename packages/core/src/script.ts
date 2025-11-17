@@ -22,7 +22,7 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
     const b = document.body;
     const ls = localStorage;
 
-    const storedMode = ls.getItem(`${keyPrefix}theme-mode`) ?? dMode;
+    const storedMode = ls.getItem(`${keyPrefix}mode`) ?? dMode;
     const validMode = themeModes.includes(storedMode) ? storedMode : dMode;
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const resolvedTheme = mql.matches ? "dark" : "light";
@@ -35,10 +35,10 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
       d.style.colorScheme = validMode;
     }
 
-    const storedBase = ls.getItem(`${keyPrefix}theme-base`) ?? dBase;
+    const storedBase = ls.getItem(`${keyPrefix}base`) ?? dBase;
     b.classList.add(`theme-${storedBase}`);
 
-    const storedAccent = ls.getItem(`${keyPrefix}theme-accent`) ?? dAccent;
+    const storedAccent = ls.getItem(`${keyPrefix}accent`) ?? dAccent;
     b.classList.add(`theme-${storedAccent}`);
 
     if (colors) {

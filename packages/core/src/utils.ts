@@ -17,7 +17,7 @@ export const getStoredThemeMode = createIsomorphicFn()
   .client((): ThemeMode => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
-      const storedTheme = localStorage.getItem(`${keyPrefix}theme-mode`);
+      const storedTheme = localStorage.getItem(`${keyPrefix}mode`);
       if (!storedTheme) return "auto";
       return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
     } catch {
@@ -29,7 +29,7 @@ export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
     const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
     const keyPrefix = getConfigValue("localStorageKeyPrefix");
-    localStorage.setItem(`${keyPrefix}theme-mode`, parsedTheme);
+    localStorage.setItem(`${keyPrefix}mode`, parsedTheme);
   } catch {
     // Silently fail if localStorage is unavailable
   }
@@ -40,7 +40,7 @@ export const getStoredThemeBase = createIsomorphicFn()
   .client(() => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
-      const storedBase = localStorage.getItem(`${keyPrefix}theme-base`);
+      const storedBase = localStorage.getItem(`${keyPrefix}base`);
       return storedBase ?? getConfigValue("defaultBase");
     } catch {
       return getConfigValue("defaultBase");
@@ -50,7 +50,7 @@ export const getStoredThemeBase = createIsomorphicFn()
 export const setStoredThemeBase = createClientOnlyFn((base: ThemeBase) => {
   try {
     const keyPrefix = getConfigValue("localStorageKeyPrefix");
-    localStorage.setItem(`${keyPrefix}theme-base`, base);
+    localStorage.setItem(`${keyPrefix}base`, base);
   } catch {
     // Silently fail if localStorage is unavailable
   }
@@ -61,7 +61,7 @@ export const getStoredThemeAccent = createIsomorphicFn()
   .client(() => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
-      const storedAccent = localStorage.getItem(`${keyPrefix}theme-accent`);
+      const storedAccent = localStorage.getItem(`${keyPrefix}accent`);
       return storedAccent ?? getConfigValue("defaultAccent");
     } catch {
       return getConfigValue("defaultAccent");
@@ -72,7 +72,7 @@ export const setStoredThemeAccent = createClientOnlyFn(
   (accent: ThemeAccent) => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
-      localStorage.setItem(`${keyPrefix}theme-accent`, accent);
+      localStorage.setItem(`${keyPrefix}accent`, accent);
     } catch {
       // Silently fail if localStorage is unavailable
     }

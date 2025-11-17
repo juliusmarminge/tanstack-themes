@@ -35,7 +35,7 @@ function RootDocument(props: { children: Solid.JSX.Element }) {
         <ThemeProvider
           themeColorLookup={THEME_COLOR_MAP}
           defaultBase="t3chat"
-          localStorageKeyPrefix="tst2-"
+          localStorageKeyPrefix="tst2-theme-"
         />
         <Scripts />
       </body>
