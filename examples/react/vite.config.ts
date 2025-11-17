@@ -9,7 +9,6 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   server: {
     port: 3000,
-    allowedHosts: ["energy-parliament-powers-venue.trycloudflare.com"],
   },
   plugins: [
     tailwindcss(),
