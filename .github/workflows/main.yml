@@ -32,6 +32,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
       - run: bunx sherif@1.6.1
 
   test:
