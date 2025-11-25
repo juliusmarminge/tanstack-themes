@@ -31,8 +31,7 @@
   "scripts": {
     "build": "tsdown src/index.ts --dts --platform neutral --unbundle",
     "clean": "rm -rf .cache .turbo dist node_modules",
-    "prepack": "bun ../../scripts/replace-workspace-protocol.ts",
-    "typecheck": "tsgo --noEmit"
+    "prepack": "bun ../../scripts/replace-workspace-protocol.ts"
   },
   "dependencies": {
     "@tanstack-themes/core": "workspace:*"
@@ -46,8 +45,8 @@
   "devDependencies": {
     "@tanstack/solid-router": "^1.136.3",
     "@tanstack/solid-store": "^0.8.0",
-    "@typescript/native-preview": "7.0.0-dev.20251116.1",
+    "@typescript/native-preview": "7.0.0-dev.20251125.1",
     "solid-js": "^1.9.10",
-    "tsdown": "0.15.12"
+    "tsdown": "0.16.7"
   }
 }

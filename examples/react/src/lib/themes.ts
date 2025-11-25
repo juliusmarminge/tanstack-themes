@@ -3,13 +3,7 @@ import type { ThemeColorMap } from "@tanstack-themes/react";
 export const BASE_COLORS = ["stone", "zinc", "slate"] as const;
 export type BaseColor = (typeof BASE_COLORS)[number];
 
-export const ACCENT_COLORS = [
-  "default",
-  "sapphire",
-  "emerald",
-  "amber",
-  "mono",
-] as const;
+export const ACCENT_COLORS = ["default", "sapphire", "emerald", "amber", "mono"] as const;
 export type AccentColor = (typeof ACCENT_COLORS)[number];
 
 declare module "@tanstack-themes/react" {

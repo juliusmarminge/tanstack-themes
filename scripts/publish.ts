@@ -1,7 +1,6 @@
 /**
  * Script for publishing the packages to JSR after an NPM release
  */
-export const MODULE = true;
 
 const packages = ["core", "react", "solid"];
 
@@ -23,7 +22,5 @@ for (const pkg of packages) {
   /**
    * 3. Publish to JSR
    */
-  await Bun.$`bunx jsr publish --allow-dirty --allow-slow-types`.cwd(
-    `packages/${pkg}`,
-  );
+  await Bun.$`bunx jsr publish --allow-dirty --allow-slow-types`.cwd(`packages/${pkg}`);
 }

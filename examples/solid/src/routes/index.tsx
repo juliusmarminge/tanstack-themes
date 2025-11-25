@@ -1,10 +1,5 @@
 import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
-import {
-  setThemeMode,
-  setThemeBase,
-  useTheme,
-  ThemeBase,
-} from "@tanstack-themes/solid";
+import { setThemeMode, setThemeBase, useTheme, ThemeBase } from "@tanstack-themes/solid";
 import { For } from "solid-js";
 import { NativeSelect, NativeSelectOption } from "../components/native-select";
 import { THEMES } from "../lib/themes";
@@ -20,9 +15,7 @@ function RouteComponent() {
       <div class="container mx-auto max-w-4xl px-4 py-12">
         <div class="space-y-8">
           <header class="text-center">
-            <h1 class="text-4xl font-bold tracking-tight">
-              TanStack Themes Preview
-            </h1>
+            <h1 class="text-4xl font-bold tracking-tight">TanStack Themes Preview</h1>
           </header>
           <ClientOnly>
             <div class="space-y-6">
@@ -48,9 +41,7 @@ function VariantSelect() {
         class="border-foreground/20"
       >
         <For each={THEMES} fallback="Loading">
-          {(theme) => (
-            <NativeSelectOption value={theme}>{theme}</NativeSelectOption>
-          )}
+          {(theme) => <NativeSelectOption value={theme}>{theme}</NativeSelectOption>}
         </For>
       </NativeSelect>
     </div>

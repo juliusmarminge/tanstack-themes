@@ -2,10 +2,7 @@
  * This is the core package of tanstack-themes.
  * @module
  */
-import {
-  createClientOnlyFn,
-  createIsomorphicFn,
-} from "@tanstack/start-client-core";
+import { createClientOnlyFn, createIsomorphicFn } from "@tanstack/start-client-core";
 import { Store } from "@tanstack/store";
 import type {
   ThemeMode,
@@ -20,7 +17,6 @@ import type {
 import {
   updateDOM,
   getStoredThemeMode,
-  getSystemTheme,
   getStoredThemeBase,
   getNextThemeMode,
   setStoredThemeMode,

@@ -10,14 +10,7 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
     config.defaultAccent,
   ] as const;
 
-  function themeFn([
-    themeModes,
-    colors,
-    keyPrefix,
-    dMode,
-    dBase,
-    dAccent,
-  ]: typeof fnArgs) {
+  function themeFn([themeModes, colors, keyPrefix, dMode, dBase, dAccent]: typeof fnArgs) {
     const d = document.documentElement;
     const b = document.body;
     const ls = localStorage;
@@ -42,10 +35,9 @@ export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
     b.classList.add(`theme-${storedAccent}`);
 
     if (colors) {
-      const themeColorMetaTags =
-        document.head.querySelectorAll<HTMLMetaElement>(
-          "meta[name='theme-color']",
-        );
+      const themeColorMetaTags = document.head.querySelectorAll<HTMLMetaElement>(
+        "meta[name='theme-color']",
+      );
       for (const tag of themeColorMetaTags) {
         if (validMode === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {

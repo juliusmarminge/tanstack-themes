@@ -111,9 +111,7 @@ export function getThemeColorMetaTags(
  * }
  * ```
  */
-export function useTheme<T = core.ThemeStore>(
-  selector?: (state: core.ThemeStore) => T,
-): T {
+export function useTheme<T = core.ThemeStore>(selector?: (state: core.ThemeStore) => T): T {
   return useStore(core.store, selector);
 }
 

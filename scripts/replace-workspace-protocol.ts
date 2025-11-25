@@ -1,5 +1,3 @@
-export const MODULE = true;
-
 /**
  * Hack to replace the workspace protocol with the actual version
  */

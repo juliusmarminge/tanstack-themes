@@ -1,10 +1,13 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "Preserve",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "isolatedDeclarations": false,
+    "composite": false,
     "declaration": false,
+    "declarationMap": false,
     "noEmit": true
   },
   "include": ["./**/*.ts", "./**/*.tsx", "./public/script*.js"],

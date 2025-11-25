@@ -12,18 +12,17 @@
     "clean": "turbo run clean && rm -rf .turbo node_modules",
     "dev": "turbo watch build test --filter @tanstack-themes/* --filter //",
     "fmt": "oxfmt",
-    "lint": "oxlint --type-aware",
+    "lint": "oxlint --type-aware --type-check",
     "test": "vitest --silent=passed-only",
-    "test:run": "vitest run --silent=passed-only",
-    "typecheck": "turbo typecheck"
+    "test:run": "vitest run --silent=passed-only"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.29.7",
     "@types/bun": "^1.3.2",
-    "@typescript/native-preview": "7.0.0-dev.20251116.1",
-    "oxfmt": "0.13.0",
-    "oxlint": "1.28.0",
+    "@typescript/native-preview": "7.0.0-dev.20251125.1",
+    "oxfmt": "0.15.0",
+    "oxlint": "1.30.0",
     "oxlint-tsgolint": "^0.7.0",
     "turbo": "2.5.8",
     "vitest": "4.0.5"

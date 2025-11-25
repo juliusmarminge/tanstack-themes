@@ -6,13 +6,7 @@ import {
   setThemeAccent,
   THEME_MODES,
 } from "@tanstack-themes/react";
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-} from "../components/select";
+import { Select, SelectItem, SelectTrigger, SelectValue, SelectPopup } from "../components/select";
 import { BASE_COLORS, ACCENT_COLORS } from "../lib/themes";
 import { ColorPreview } from "../components/color-preview";
 import { SunIcon, MoonIcon, MonitorIcon } from "../components/icons";
@@ -105,9 +99,7 @@ function ThemeAccentSelect() {
       onValueChange={(value) => setThemeAccent(value)}
     >
       <SelectTrigger>
-        <SelectValue>
-          {(accent) => (hydrated ? accent : "Select accent")}
-        </SelectValue>
+        <SelectValue>{(accent) => (hydrated ? accent : "Select accent")}</SelectValue>
       </SelectTrigger>
       <SelectPopup>
         {ACCENT_COLORS.map((accent) => (

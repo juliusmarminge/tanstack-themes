@@ -36,15 +36,6 @@ jobs:
       - run: bun lint
       - run: bunx sherif@1.6.1
 
-  typecheck:
-    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - uses: ./.github/setup
-
-      - run: bun typecheck
-
   test:
     runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
     steps:
