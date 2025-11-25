@@ -39,12 +39,6 @@
         "react/rules-of-hooks": "warn",
         "react/exhaustive-deps": "warn"
       }
-    },
-    {
-      "files": ["test/**", "**/*.test.ts", "**/*.test.tsx"],
-      "rules": {
-        "typescript/require-await": "off"
-      }
     }
   ]
 }
