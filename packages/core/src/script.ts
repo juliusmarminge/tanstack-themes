@@ -1,4 +1,5 @@
-import { THEME_MODES, TanstackThemesConfig } from "./config.ts";
+import type { TanstackThemesConfig } from "./config.ts";
+import { THEME_MODES } from "./config.ts";
 
 export const getThemeDetectorScript = function (config: TanstackThemesConfig) {
   const fnArgs = [

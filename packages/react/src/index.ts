@@ -189,7 +189,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
         colorScheme: scheme,
       },
     };
-  }, [mode, scheme]);
+  }, [mode, scheme, isHydrated]);
 }
 
 /**

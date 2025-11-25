@@ -63,10 +63,10 @@ export const setConfig = (config: Partial<TanstackThemesConfig>) => {
 
 export const getConfigValue = <T extends keyof TanstackThemesConfig | undefined = undefined>(
   key?: T,
-): T extends undefined
-  ? TanstackThemesConfig
-  : T extends keyof TanstackThemesConfig
-    ? TanstackThemesConfig[T]
-    : never => {
-  return (key ? configStore.state[key] : configStore.state) as any;
+) => {
+  return (key ? configStore.state[key] : configStore.state) as T extends undefined
+    ? TanstackThemesConfig
+    : T extends keyof TanstackThemesConfig
+      ? TanstackThemesConfig[T]
+      : never;
 };

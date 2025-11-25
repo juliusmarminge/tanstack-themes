@@ -40,6 +40,7 @@
     "@tanstack/start-client-core": "^1.134.4",
     "@tanstack/store": "^0.8.0",
     "@typescript/native-preview": "7.0.0-dev.20251125.1",
-    "tsdown": "0.16.7"
+    "tsdown": "0.16.7",
+    "typescript": "5.9.3"
   }
 }

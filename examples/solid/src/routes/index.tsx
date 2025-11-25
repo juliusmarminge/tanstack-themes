@@ -1,5 +1,6 @@
 import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
-import { setThemeMode, setThemeBase, useTheme, ThemeBase } from "@tanstack-themes/solid";
+import type { ThemeBase } from "@tanstack-themes/solid";
+import { setThemeMode, setThemeBase, useTheme } from "@tanstack-themes/solid";
 import { For } from "solid-js";
 import { NativeSelect, NativeSelectOption } from "../components/native-select";
 import { THEMES } from "../lib/themes";
