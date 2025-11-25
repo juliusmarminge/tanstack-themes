@@ -13,7 +13,6 @@
     "eslint/prefer-rest-params": "warn",
     "eslint/no-case-declarations": "warn",
     "eslint/no-var": "warn",
-    "eslint/no-new": "off",
     "import/consistent-type-specifier-style": ["warn", "prefer-top-level"],
     "typescript/consistent-type-imports": [
       "warn",
