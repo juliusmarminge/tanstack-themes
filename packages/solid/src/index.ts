@@ -179,9 +179,7 @@ export function ThemeProvider(
  * @remarks You only need to use this if you are dynamically setting properties on the html element.
  * @returns The attributes for the html element.
  */
-export function useHtmlAttributes(): Solid.Accessor<
-  Solid.JSX.IntrinsicElements["html"]
-> {
+export function useHtmlAttributes(): Solid.Accessor<Solid.JSX.IntrinsicElements["html"]> {
   const isHydrated = useHydrated();
   const mode = useTheme((state) => state.mode);
   const scheme = useTheme((state) => state.resolvedMode);
@@ -207,9 +205,7 @@ export function useHtmlAttributes(): Solid.Accessor<
  * @remarks You only need to use this if you are dynamically setting properties on the body element.
  * @returns The attributes for the body element.
  */
-export function useBodyAttributes(): Solid.Accessor<
-  Solid.JSX.IntrinsicElements["body"]
-> {
+export function useBodyAttributes(): Solid.Accessor<Solid.JSX.IntrinsicElements["body"]> {
   const isHydrated = useHydrated();
   const base = useTheme((state) => state.base);
   const accent = useTheme((state) => state.accent);

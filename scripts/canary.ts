@@ -2,7 +2,6 @@
  * Script for bumping the version of the packages to a canary version
  * and then publishing them to NPM and JSR
  */
-export const MODULE = true;
 
 const packages = ["core", "react", "solid"];
 
@@ -42,7 +41,5 @@ for (const pkg of packages) {
   /**
    * 4. Publish to JSR
    */
-  await Bun.$`bunx jsr publish --allow-dirty --allow-slow-types`.cwd(
-    `packages/${pkg}`,
-  );
+  await Bun.$`bunx jsr publish --allow-dirty --allow-slow-types`.cwd(`packages/${pkg}`);
 }

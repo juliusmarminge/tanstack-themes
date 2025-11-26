@@ -111,9 +111,7 @@ export function getThemeColorMetaTags(
  * }
  * ```
  */
-export function useTheme<T = core.ThemeStore>(
-  selector?: (state: core.ThemeStore) => T,
-): T {
+export function useTheme<T = core.ThemeStore>(selector?: (state: core.ThemeStore) => T): T {
   return useStore(core.store, selector);
 }
 
@@ -191,7 +189,7 @@ export function useHtmlAttributes(): React.JSX.IntrinsicElements["html"] {
         colorScheme: scheme,
       },
     };
-  }, [mode, scheme]);
+  }, [mode, scheme, isHydrated]);
 }
 
 /**
