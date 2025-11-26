@@ -23,7 +23,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - uses: ./.github/setup
-
       - run: bun turbo build --filter=@tanstack-themes/*
       - run: bun lint
 
@@ -43,6 +42,4 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6
       - uses: ./.github/setup
-
-      - run: bun turbo run build --filter=@tanstack-themes/*
       - run: bun run test
