@@ -18,7 +18,7 @@ env:
 
 jobs:
   build-lint:
-    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -28,20 +28,20 @@ jobs:
       - run: bun lint
 
   ws-lint:
-    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v1
+        uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
-      - run: bunx sherif@1.6.1
+          bun-version-file: package.json
+      - run: bunx sherif@1.9.0
 
   test:
-    runs-on: ubuntu-latest # blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: ./.github/setup
 
       - run: bun turbo run build --filter=@tanstack-themes/*
