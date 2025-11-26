@@ -25,7 +25,7 @@ jobs:
       - uses: ./.github/setup
       - run: bun turbo build --filter=@tanstack-themes/*
       - run: bun lint
-      - run: bun fmt
+      - run: bun fmt --check
 
   sherif:
     runs-on: ubuntu-latest
