@@ -17,7 +17,7 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
 jobs:
-  build-lint:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -26,7 +26,15 @@ jobs:
       - run: bun turbo build --filter=@tanstack-themes/*
       - run: bun lint
 
-  ws-lint:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: ./.github/setup
+      - run: bun fmt --check
+
+  sherif:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo

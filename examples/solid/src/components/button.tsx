@@ -1,5 +1,5 @@
-import { splitProps } from 'solid-js';
-import type { ComponentProps } from 'solid-js';
+import { splitProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 export function Button(props: ComponentProps<"button">) {

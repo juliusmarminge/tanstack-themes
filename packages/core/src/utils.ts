@@ -1,7 +1,7 @@
 /// <reference types="./ts-reset.d.ts" />
 import { createClientOnlyFn, createIsomorphicFn } from "@tanstack/start-client-core";
-import { getConfigValue, THEME_MODES } from './config.ts';
-import type { ThemeMode, ResolvedMode, ThemeBase, ThemeAccent } from './config.ts';
+import { getConfigValue, THEME_MODES } from "./config.ts";
+import type { ThemeMode, ResolvedMode, ThemeBase, ThemeAccent } from "./config.ts";
 
 export const resolveThemeMode = (themeMode: ThemeMode): ResolvedMode => {
   return themeMode === "auto" ? getSystemTheme() : themeMode;
