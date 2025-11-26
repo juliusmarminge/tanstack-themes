@@ -1,11 +1,6 @@
 /// <reference types="vite/client" />
 import * as React from "react";
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRoute,
-} from "@tanstack/react-router";
+import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import {
   ThemeProvider,

@@ -4,8 +4,8 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "oxc.oxc-vscode",
-  "files.associations": {
-    "*.css": "tailwindcss"
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
@@ -13,18 +13,17 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+  "files.associations": {
+    "*.css": "tailwindcss"
   },
   "oxc.fmt.experimental": true,
   "oxc.typeAware": true,
+  "oxc.configPath": ".config/.oxlintrc.json",
+  "oxc.fmt.configPath": ".config/.oxfmtrc.json",
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.experimental.useTsgo": true,
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "[tailwindcss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

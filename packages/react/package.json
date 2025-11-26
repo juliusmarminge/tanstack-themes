@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-themes/react",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "keywords": [
     "tanstack",
@@ -31,8 +31,7 @@
   "scripts": {
     "build": "tsdown src/index.ts --dts --platform neutral --unbundle",
     "clean": "rm -rf .cache .turbo dist node_modules",
-    "prepack": "bun ../../scripts/replace-workspace-protocol.ts",
-    "typecheck": "tsgo --noEmit"
+    "prepack": "bun ../../scripts/replace-workspace-protocol.ts"
   },
   "dependencies": {
     "@tanstack-themes/core": "workspace:*"
@@ -47,8 +46,8 @@
     "@tanstack/react-router": "^1.136.3",
     "@tanstack/react-store": "^0.8.0",
     "@types/react": "^19.2.2",
-    "@typescript/native-preview": "7.0.0-dev.20251116.1",
+    "@typescript/native-preview": "7.0.0-dev.20251125.1",
     "react": "^19.2.0",
-    "tsdown": "0.15.12"
+    "tsdown": "0.16.7"
   }
 }

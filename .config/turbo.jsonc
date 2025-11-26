@@ -13,10 +13,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", ".nuxt"]
     },
-    "typecheck": {
-      "dependsOn": ["transit", "^build"],
-      "outputs": [".cache/tsbuildinfo.json"]
-    },
     "//#test": {
       "persistent": true,
       "outputs": []

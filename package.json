@@ -1,6 +1,10 @@
 {
   "name": "@tanstack-themes/root",
   "packageManager": "bun@1.3.1",
+  "engines": {
+    "node": "^24.0.0",
+    "bun": "^1.3.0"
+  },
   "private": true,
   "type": "module",
   "workspaces": [
@@ -9,27 +13,27 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build --filter @tanstack-themes/*",
-    "clean": "turbo run clean && rm -rf .turbo node_modules",
-    "dev": "turbo watch build test --filter @tanstack-themes/* --filter //",
+    "turbo": "turbo --root-turbo-json .config/turbo.jsonc",
+    "build": "bun run turbo run build --filter @tanstack-themes/*",
+    "clean": "bun run turbo run clean && rm -rf .turbo node_modules",
+    "dev": "bun run turbo watch build test --filter @tanstack-themes/* --filter //",
     "docs:build": "bun -F docs build",
     "docs:dev": "bun -F docs dev",
-    "fmt": "oxfmt",
-    "lint": "oxlint --type-aware",
+    "fmt": "oxfmt -c .config/.oxfmtrc.json",
+    "lint": "oxlint -c .config/.oxlintrc.json --type-aware --type-check --deny-warnings --report-unused-disable-directives",
     "test": "vitest --silent=passed-only",
-    "test:run": "vitest run --silent=passed-only",
-    "typecheck": "turbo typecheck"
+    "test:run": "vitest run --silent=passed-only"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.29.7",
     "@types/bun": "^1.3.2",
-    "@typescript/native-preview": "7.0.0-dev.20251116.1",
-    "oxfmt": "0.13.0",
-    "oxlint": "1.28.0",
-    "oxlint-tsgolint": "^0.7.0",
-    "turbo": "2.5.8",
-    "vitest": "4.0.5"
+    "@typescript/native-preview": "7.0.0-dev.20251125.1",
+    "oxfmt": "0.15.0",
+    "oxlint": "1.30.0",
+    "oxlint-tsgolint": "^0.8.2",
+    "turbo": "2.6.1",
+    "vitest": "4.0.14"
   },
   "patchedDependencies": {
     "@tanstack/react-router@1.133.36": "patches/@tanstack%2Freact-router@1.133.36.patch"

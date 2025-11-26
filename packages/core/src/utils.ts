@@ -1,37 +1,29 @@
 /// <reference types="./ts-reset.d.ts" />
-import {
-  createClientOnlyFn,
-  createIsomorphicFn,
-} from "@tanstack/start-client-core";
-import {
-  type ThemeMode,
-  type ResolvedMode,
-  type ThemeBase,
-  type ThemeAccent,
-  getConfigValue,
-  THEME_MODES,
-} from "./config.ts";
+import { createClientOnlyFn, createIsomorphicFn } from "@tanstack/start-client-core";
+import { getConfigValue, THEME_MODES } from "./config.ts";
+import type { ThemeMode, ResolvedMode, ThemeBase, ThemeAccent } from "./config.ts";
 
 export const resolveThemeMode = (themeMode: ThemeMode): ResolvedMode => {
   return themeMode === "auto" ? getSystemTheme() : themeMode;
 };
 
 export const getStoredThemeMode = createIsomorphicFn()
-  .server((): ThemeMode => "auto")
+  .server((): ThemeMode => getConfigValue("defaultMode"))
   .client((): ThemeMode => {
     try {
       const keyPrefix = getConfigValue("localStorageKeyPrefix");
       const storedTheme = localStorage.getItem(`${keyPrefix}mode`);
-      if (!storedTheme) return "auto";
-      return THEME_MODES.includes(storedTheme) ? storedTheme : "auto";
+      return storedTheme && THEME_MODES.includes(storedTheme)
+        ? storedTheme
+        : getConfigValue("defaultMode");
     } catch {
-      return "auto";
+      return getConfigValue("defaultMode");
     }
   });
 
 export const setStoredThemeMode = createClientOnlyFn((themeMode: ThemeMode) => {
   try {
-    const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : "auto";
+    const parsedTheme = THEME_MODES.includes(themeMode) ? themeMode : getConfigValue("defaultMode");
     const keyPrefix = getConfigValue("localStorageKeyPrefix");
     localStorage.setItem(`${keyPrefix}mode`, parsedTheme);
   } catch {
@@ -72,16 +64,14 @@ export const getStoredThemeAccent = createIsomorphicFn()
     }
   });
 
-export const setStoredThemeAccent = createClientOnlyFn(
-  (accent: ThemeAccent) => {
-    try {
-      const keyPrefix = getConfigValue("localStorageKeyPrefix");
-      localStorage.setItem(`${keyPrefix}accent`, accent);
-    } catch {
-      // Silently fail if localStorage is unavailable
-    }
-  },
-);
+export const setStoredThemeAccent = createClientOnlyFn((accent: ThemeAccent) => {
+  try {
+    const keyPrefix = getConfigValue("localStorageKeyPrefix");
+    localStorage.setItem(`${keyPrefix}accent`, accent);
+  } catch {
+    // Silently fail if localStorage is unavailable
+  }
+});
 
 export const getSystemTheme = createIsomorphicFn()
   .server((): ResolvedMode => "light")
@@ -115,9 +105,7 @@ export const updateDOM = createClientOnlyFn(
   (themeMode: ThemeMode, base: ThemeBase, accent: ThemeAccent) => {
     const themeColorLookup = getConfigValue("themeColorLookup");
 
-    const cleanup = getConfigValue("disableAnimation")
-      ? disableAnimation()
-      : undefined;
+    const cleanup = getConfigValue("disableAnimation") ? disableAnimation() : undefined;
     const newTheme = resolveThemeMode(themeMode);
 
     // 1. Update the root element classList (theme-mode)
@@ -138,10 +126,9 @@ export const updateDOM = createClientOnlyFn(
 
     // 4. Update the theme color meta tags
     if (themeColorLookup) {
-      const themeColorMetaTags =
-        document.head.querySelectorAll<HTMLMetaElement>(
-          "meta[name='theme-color']",
-        );
+      const themeColorMetaTags = document.head.querySelectorAll<HTMLMetaElement>(
+        "meta[name='theme-color']",
+      );
       themeColorMetaTags.forEach((tag, idx) => {
         if (themeMode === "auto") {
           if (tag.media === "(prefers-color-scheme: light)") {
@@ -150,8 +137,7 @@ export const updateDOM = createClientOnlyFn(
             tag.content = themeColorLookup[`${base}-dark`];
           } else if (tag.media === "") {
             const isLightTag = idx === 0;
-            tag.content =
-              themeColorLookup[`${base}-${isLightTag ? "light" : "dark"}`];
+            tag.content = themeColorLookup[`${base}-${isLightTag ? "light" : "dark"}`];
             tag.media = `(prefers-color-scheme: ${isLightTag ? "light" : "dark"})`;
           }
         } else {
@@ -165,12 +151,8 @@ export const updateDOM = createClientOnlyFn(
   },
 );
 
-export const getNextThemeMode = createClientOnlyFn(
-  (current: ThemeMode): ThemeMode => {
-    const themes: ThemeMode[] =
-      getSystemTheme() === "dark"
-        ? ["auto", "light", "dark"]
-        : ["auto", "dark", "light"];
-    return themes[(themes.indexOf(current) + 1) % themes.length];
-  },
-);
+export const getNextThemeMode = createClientOnlyFn((current: ThemeMode): ThemeMode => {
+  const themes: ThemeMode[] =
+    getSystemTheme() === "dark" ? ["auto", "light", "dark"] : ["auto", "dark", "light"];
+  return themes[(themes.indexOf(current) + 1) % themes.length];
+});

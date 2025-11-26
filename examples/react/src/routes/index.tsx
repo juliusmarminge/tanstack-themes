@@ -6,13 +6,7 @@ import {
   setThemeAccent,
   THEME_MODES,
 } from "@tanstack-themes/react";
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-} from "../components/select";
+import { Select, SelectItem, SelectTrigger, SelectValue, SelectPopup } from "../components/select";
 import { BASE_COLORS, ACCENT_COLORS } from "../lib/themes";
 import { ColorPreview } from "../components/color-preview";
 import { SunIcon, MoonIcon, MonitorIcon } from "../components/icons";
@@ -43,7 +37,7 @@ function ThemeModeSelect() {
       disabled={!hydrated}
       items={THEME_MODES.map((mode) => ({ label: mode, value: mode }))}
       defaultValue={mode}
-      onValueChange={(value) => setThemeMode(value)}
+      onValueChange={(value) => setThemeMode(value!)}
     >
       <SelectTrigger>
         <SelectValue>
@@ -77,7 +71,7 @@ function ThemeBaseSelect() {
       disabled={!hydrated}
       defaultValue={base}
       items={BASE_COLORS.map((base) => ({ label: base, value: base }))}
-      onValueChange={(value) => setThemeBase(value)}
+      onValueChange={(value) => setThemeBase(value!)}
     >
       <SelectTrigger>
         <SelectValue>{(base) => (hydrated ? base : "Select base")}</SelectValue>
@@ -102,12 +96,10 @@ function ThemeAccentSelect() {
       disabled={!hydrated}
       defaultValue={accent}
       items={ACCENT_COLORS.map((accent) => ({ label: accent, value: accent }))}
-      onValueChange={(value) => setThemeAccent(value)}
+      onValueChange={(value) => setThemeAccent(value!)}
     >
       <SelectTrigger>
-        <SelectValue>
-          {(accent) => (hydrated ? accent : "Select accent")}
-        </SelectValue>
+        <SelectValue>{(accent) => (hydrated ? accent : "Select accent")}</SelectValue>
       </SelectTrigger>
       <SelectPopup>
         {ACCENT_COLORS.map((accent) => (

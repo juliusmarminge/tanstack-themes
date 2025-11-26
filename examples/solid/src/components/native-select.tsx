@@ -1,4 +1,5 @@
-import { type ComponentProps, splitProps } from "solid-js";
+import { splitProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 function NativeSelect(props: ComponentProps<"select">) {
@@ -33,24 +34,12 @@ function NativeSelectOption(props: ComponentProps<"option">) {
 
 function NativeSelectOptGroup(props: ComponentProps<"optgroup">) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <optgroup
-      data-slot="native-select-optgroup"
-      class={twMerge(local.class)}
-      {...rest}
-    />
-  );
+  return <optgroup data-slot="native-select-optgroup" class={twMerge(local.class)} {...rest} />;
 }
 
 function ChevronDownIcon(props: ComponentProps<"svg">) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}>
       <title>Arrow Down</title>
       <path
         fill="none"
