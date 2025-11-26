@@ -60,7 +60,7 @@ export function Button({ className, variant, size, render, ...props }: ButtonPro
 
   return useRender({
     defaultTagName: "button",
-    render,
     props: mergeProps<"button">(defaultProps, props),
+    ...(render ? { render } : {}),
   });
 }
