@@ -8,6 +8,7 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "docs",
     "examples/*",
     "packages/*"
   ],
@@ -16,6 +17,8 @@
     "build": "bun run turbo run build --filter @tanstack-themes/*",
     "clean": "bun run turbo run clean && rm -rf .turbo node_modules",
     "dev": "bun run turbo watch build test --filter @tanstack-themes/* --filter //",
+    "docs:build": "bun -F docs build",
+    "docs:dev": "bun -F docs dev",
     "fmt": "oxfmt -c .config/.oxfmtrc.json",
     "lint": "oxlint -c .config/.oxlintrc.json --type-aware --type-check --deny-warnings --report-unused-disable-directives",
     "test": "vitest --silent=passed-only",

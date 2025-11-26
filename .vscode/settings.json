@@ -7,6 +7,9 @@
   "[tailwindcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

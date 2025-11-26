@@ -15,6 +15,5 @@
       "@tanstack-themes/solid"
     ]
   ],
-
-  "ignore": ["@examples/react"]
+  "ignore": ["@examples/react", "docs"]
 }
