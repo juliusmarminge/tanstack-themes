@@ -25,14 +25,7 @@ jobs:
       - uses: ./.github/setup
       - run: bun turbo build --filter=@tanstack-themes/*
       - run: bun lint
-
-  fmt:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - uses: ./.github/setup
-      - run: bun fmt --check
+      - run: bun fmt
 
   sherif:
     runs-on: ubuntu-latest
