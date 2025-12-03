@@ -33,6 +33,6 @@
     "vitest": "4.0.14"
   },
   "patchedDependencies": {
-    "@tanstack/react-router@1.133.36": "patches/@tanstack%2Freact-router@1.133.36.patch"
+    "@tanstack/react-router@1.139.14": "patches/@tanstack%2Freact-router@1.139.14.patch"
   }
 }
